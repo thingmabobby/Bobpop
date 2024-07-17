@@ -64,7 +64,7 @@ bobpop({
 ````
 
 
-A light-dismissed alert hiding the "X" close button anchored to a specific DOM element with custom HTML in the title and a red tooltip arrow
+A light-dismissed alert hiding the "X" close button, a custom background, anchored to a specific DOM element, custom HTML in the title, and a red tooltip arrow
 ````
 bobpop({
 	title: '<div style="text-align: center;">Tooltip</div>',
