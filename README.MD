@@ -33,7 +33,7 @@
 
 **Examples**
 
-A light-dismissed, very simple, and generic error messsage.
+- A light-dismissed, very simple, and generic error messsage.
 ````
 bobpop({
 	title: 'Error!',
@@ -42,7 +42,7 @@ bobpop({
 ````
 
 
-A hard-dismissed, very simple, and generic error messsage.
+- A hard-dismissed, very simple, and generic error messsage.
 ````
 bobpop({
 	type: 'manual',
@@ -52,7 +52,7 @@ bobpop({
 ````
 
 
-Anchored to a specific DOM element with a "tooltip arrow" pointing to it
+- Anchored to a specific DOM element with a "tooltip arrow" pointing to it
 ````
 bobpop({
 	title: 'Error!',
@@ -64,7 +64,7 @@ bobpop({
 ````
 
 
-A light-dismissed alert hiding the "X" close button, a custom background, anchored to a specific DOM element, custom HTML in the title, and a red tooltip arrow
+- A light-dismissed alert hiding the "X" close button, a custom background, anchored to a specific DOM element, custom HTML in the title, and a red tooltip arrow
 ````
 bobpop({
 	title: '<div style="text-align: center;">Tooltip</div>',
