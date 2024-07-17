@@ -1,16 +1,17 @@
 /*
 // Bobpop
-// Custom popover API modal
+// Vanilla JavaScript custom alerts using the Popover API and CSS anchors to show alerts/tooltips in the top layer potentially positioned with CSS anchors.
 //
-// I originally wrote this to help me create popover API error modals on top of dialog modals, but I figured it can be used for any small alert modal.
+// I originally wrote this to help me create popover API error alerts on top of my existing dialog modals, but I figured it can be used for any small alert. 
+// This was mostly me just testing the Popover API and CSS anchors. It is pretty limited in what you can do with anchors, but I figured it was good enough as a test.
 //
 // OPTIONS:
 // 
 // id: 					The DOM ID to specify to be used (default: bobpop)
 // type: 				Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify automatic to make them hit the "X" to dismiss it (escape won't dismiss using manual so avoid manual if accessibility is a concern)
-// title:				The header title of the modal (can be HTML) 
-// body: 				The body of the modal (can be HTML)
-// closeButtonText:		Inner text of the "X" dismissal button (default: ❌)
+// title:				The header title of the popover (can be HTML) 
+// body: 				The body of the popover (can be HTML)
+// closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: ❌)
 // hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to auto
 //
 // border:				CSS border (default: none)
@@ -24,12 +25,13 @@
 // margin: 				CSS margin (default: unset, default if anchor is specified: .5rem 0)
 // 
 // anchor: 				CSS anchor name to attach it to (e.g.: --anchorname)
-// anchorToId:			Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the modal to it
+// anchorToId:			Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it
 // anchorBottom:		CSS bottom (default: anchor(top))
 // anchorInsetArea:		CSS inset-area (default: bottom)
 //
 // tooltipArrow:		Displays an arrow pointing outwards in the specified placement. (default: top center)
 //							- The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically.
+// tooltipArrowColor:	The color of the tooltip arrow. (default: black)
 //						 ________________________________________________________________________________________
 //						|																				 	   	 |
 //						|left top - top left				top center						top right - right top|
@@ -95,7 +97,7 @@ function bobpop(options = []) {
 		xbutton.style.color = 'red';
 		let closeButtonText = '❌';
 		if (options.closeButtonText) { closeButtonText = options.closeButtonText; }
-		xbutton.innerText = closeButtonText;
+		xbutton.innerHTML = closeButtonText;
 		xbutton.id = id + '_xbutton';
 		xbutton.setAttribute('popovertarget', id);
 		xbutton.setAttribute('popovertargetaction', 'hide');
@@ -133,6 +135,9 @@ function bobpop(options = []) {
 	
 	// if an anchor is specified it needs to be passed as a css anchor name (e.g.:  --anchorname)
 	if (options.anchor) { 
+		// if it wasn't given with the prepended -- then just add them
+		if (options.anchor.slice(0,2) != '--') { options.anchor = '--' + options.anchor; }
+		
 		// anchor name 
 		popoverDiv.style.positionAnchor = options.anchor; 
 	
@@ -163,13 +168,16 @@ function bobpop(options = []) {
 	
 	// tooltip arrow
 	let tooltipArrow = '';
+	let tooltipArrowColor = 'black';
 	if (options.tooltipArrow) {
 		let tooltipArrow = options.tooltipArrow;
+		
+		if (options.tooltipArrowColor) { tooltipArrowColor = options.tooltipArrowColor; }
 		
 		// top - no diag (default top center)
 		let tooltipArrowBottom = '90%';
 		let tooltipArrowLeft = '50%';
-		let tooltipArrowBorderColor = 'transparent transparent black';
+		let tooltipArrowBorderColor = 'transparent transparent ' + tooltipArrowColor;
 		
 		if (tooltipArrow == 'top left') {
 			tooltipArrowLeft = '10%';
@@ -182,51 +190,51 @@ function bobpop(options = []) {
 		if (tooltipArrow == 'bottom left') {
 			tooltipArrowBottom = '0%';
 			tooltipArrowLeft = '10%';
-			tooltipArrowBorderColor = 'black transparent transparent';
+			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent';
 		}
 		if (tooltipArrow == 'bottom center') {
 			tooltipArrowBottom = '0%';
 			tooltipArrowLeft = '50%';
-			tooltipArrowBorderColor = 'black transparent transparent';	
+			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent';	
 		}
 		if (tooltipArrow == 'bottom right') {
 			tooltipArrowBottom = '0%';
 			tooltipArrowLeft = '90%';
-			tooltipArrowBorderColor = 'black transparent transparent';
+			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent';
 		}
 		
 		// left side (left top and left bottom are diags)
 		if (tooltipArrow == 'left top') {
 			tooltipArrowBottom = '80%';
 			tooltipArrowLeft = '8%';
-			tooltipArrowBorderColor = 'black transparent transparent black';
+			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent ' + tooltipArrowColor;
 		}
 		if (tooltipArrow == 'left ceter') {
 			tooltipArrowBottom = '50%';
 			tooltipArrowLeft = '0%';
-			tooltipArrowBorderColor = 'transparent black transparent transparent';
+			tooltipArrowBorderColor = 'transparent ' + tooltipArrowColor + ' transparent transparent';
 		}
 		if (tooltipArrow == 'left bottom') {
 			tooltipArrowBottom = '5%';
 			tooltipArrowLeft = '6%';
-			tooltipArrowBorderColor = 'transparent transparent black black';
+			tooltipArrowBorderColor = 'transparent transparent ' + tooltipArrowColor + ' ' + tooltipArrowColor;
 		}
 		
 		// right side (right top and right bottom are diags)
 		if (tooltipArrow == 'right top') {
 			tooltipArrowBottom = '80%';
 			tooltipArrowLeft = '92%';
-			tooltipArrowBorderColor = 'black black transparent transparent';
+			tooltipArrowBorderColor = tooltipArrowColor + ' ' + tooltipArrowColor + ' transparent transparent';
 		}
 		if (tooltipArrow == 'right center') {
 			tooltipArrowBottom = '50%';
 			tooltipArrowLeft = '90%';
-			tooltipArrowBorderColor = 'transparent transparent transparent black';
+			tooltipArrowBorderColor = 'transparent transparent transparent ' + tooltipArrowColor;
 		}
 		if (tooltipArrow == 'right bottom') {
 			tooltipArrowBottom = '6%';
 			tooltipArrowLeft = '93%';
-			tooltipArrowBorderColor = 'transparent black black transparent';
+			tooltipArrowBorderColor = 'transparent ' + tooltipArrowColor + ' ' + tooltipArrowColor + ' transparent';
 		}
 		
 		styleManager.add('#' + id + '::before','content: "";bottom: ' + tooltipArrowBottom + ';left: ' + tooltipArrowLeft + ';border: solid transparent;height: 0;width: 0;position: absolute;pointer-events: none;border-color: ' + tooltipArrowBorderColor + ';border-width: 8px;margin-left: -8px;');
@@ -260,6 +268,7 @@ function bobpop(options = []) {
 		}
 	});
 }
+
 
 // add a stylesheet to the document (creates a pseudo element ::before style for the popover tooltip arrow option)
 // Reference: https://stackoverflow.com/a/28930990/104380
