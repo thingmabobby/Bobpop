@@ -38,7 +38,8 @@ A light-dismissed, very simple, and generic error messsage.
 bobpop({
 	title: 'Error!',
 	body: 'Something went wrong.'
-})````
+})
+````
 
 
 A hard-dismissed, very simple, and generic error messsage.
@@ -47,7 +48,8 @@ bobpop({
 	type: 'manual',
 	title: 'Error!',
 	body: 'Something went wrong.'
-})````
+})
+````
 
 
 Anchored to a specific DOM element with a "tooltip arrow" pointing to it
@@ -58,7 +60,8 @@ bobpop({
 	anchor: '--myanchor',
 	anchorToId: 'myElement',
 	tooltipArrow: 'left top'
-})````
+})
+````
 
 
 A light-dismissed alert hiding the "X" close button anchored to a specific DOM element with custom HTML in the title and a red tooltip arrow
@@ -74,4 +77,4 @@ bobpop({
 	tooltipArrow: 'top center',
 	tooltipArrowColor: 'red'
 })
-})````
+````
