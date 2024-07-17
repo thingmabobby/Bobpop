@@ -247,12 +247,16 @@ function bobpop(options = []) {
 	// show the popover
 	popoverDiv.showPopover();
 	
-	// add the event listener to remove it from the DOM when it's been dismissed
+	// add the event listener to remove it from the DOM and cleanup when it's been dismissed
 	popoverDiv.addEventListener('toggle', (e) => {
 		if (e.newState === 'closed') {
 			popoverDiv.removeEventListener('toggle', e);
 			popoverDiv.remove();
 			styleManager.remove('#' + id + '::before');
+			
+			if (options.anchorToId && document.getElementById(options.anchorToId)) {
+				document.getElementById(options.anchorToId).style.anchorName = '';
+			}
 		}
 	});
 }
