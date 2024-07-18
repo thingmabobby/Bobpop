@@ -43,48 +43,48 @@
 //
 // 
 */
-function bobpop(options = []) {	
+function bobpop({
+	id = 'bobpop',
+	type = 'auto',
+	title = 'Error!',
+	body = 'An error occured!',
+	border = 'none',
+	padding = '15px',
+	borderRadius = '15px',
+	color = 'black',
+	background = 'pink',
+	boxShadow = 'rgba(0, 0, 0, 0.8) 0px 0px 0px 100vmax',
+	hideCloseButton = false,
+	closeButtonText = '❌',
+	position = 'fixed',
+	anchor = '',
+	anchorToId = '',
+	anchorMargin = '.5rem 0',
+	anchorBottom = 'anchor(top)',
+	anchorInsetArea = 'bottom',
+	margin = '',
+	tooltipArrow = '',
+	tooltipArrowColor = 'black',
+}) {	
 	let popoverDiv = document.createElement('div');
 	document.body.appendChild(popoverDiv);
 	
-	let id = 'bobpop';
-	if (options.id) { id = options.id; }
 	popoverDiv.setAttribute('id',id);
-	
-	let type = 'auto';
-	if (options.type) { type = options.type; }
 	popoverDiv.setAttribute('popover', type);
-	
-	let border = 'none';
-	if (options.border) { border = options.border; }
 	popoverDiv.style.border = border; 
-	
-	let padding = '15px';
-	if (options.padding) { padding = options.padding; }
 	popoverDiv.style.padding = padding; 
-	
-	let borderRadius = '15px';
-	if (options.borderRadius) { borderRadius = options.borderRadius; }
 	popoverDiv.style.borderRadius = borderRadius; 
-	
-	let color = 'black';
-	if (options.color) { color = options.color; }
 	popoverDiv.style.color = color;
-	
-	let background = 'pink';
-	if (options.background) { background = options.background; }
 	popoverDiv.style.background = background;
-	
-	let boxShadow = 'rgba(0, 0, 0, 0.8) 0px 0px 0px 100vmax';
-	if (options.boxShadow) { boxShadow = options.boxShadow; }
 	popoverDiv.style.boxShadow = boxShadow;
+	popoverDiv.style.position = position;
 	
-
-	// force the close button to show if it's not auto (light dismissed)
-	if (type != 'auto') { options.hideCloseButton = false; }
+	if (type != 'auto') { hideCloseButton = false; }	
+	if (margin != '') { popoverDiv.style.margin = margin; }
+	
 	
 	// create the X button div & X button
-	if (!options.hideCloseButton) {
+	if (!hideCloseButton) {
 		let xbuttonDiv = document.createElement('div');
 		popoverDiv.appendChild(xbuttonDiv);
 		xbuttonDiv.style.textAlign = 'right';
@@ -95,8 +95,6 @@ function bobpop(options = []) {
 		xbutton.style.background = 'transparent';
 		xbutton.style.cursor = 'pointer';
 		xbutton.style.color = 'red';
-		let closeButtonText = '❌';
-		if (options.closeButtonText) { closeButtonText = options.closeButtonText; }
 		xbutton.innerHTML = closeButtonText;
 		xbutton.id = id + '_xbutton';
 		xbutton.setAttribute('popovertarget', id);
@@ -109,9 +107,6 @@ function bobpop(options = []) {
 	titleDiv.style.fontWeight = 'bold';
 	titleDiv.style.fontSize = '1.2rem';
 	titleDiv.style.marginBottom = '15px';
-	
-	let title = 'Error!';
-	if (options.title) { title = options.title; }
 	titleDiv.innerHTML = title;
 	titleDiv.setAttribute('id',id + '_title');
 	
@@ -119,61 +114,32 @@ function bobpop(options = []) {
 	// create the body div
 	let bodyDiv = document.createElement('div');
 	popoverDiv.appendChild(bodyDiv);
-	
-	let body = 'An error occured.';
-	if (options.body) {	body = options.body; }
 	bodyDiv.innerHTML = body;
 	bodyDiv.setAttribute('id',id + '_body');
 	
 	
-	let position = 'fixed';
-	if (options.position) { 
-		popoverDiv.style.position = position;
-		position = options.position; 
-	}
-	
-	
 	// if an anchor is specified it needs to be passed as a css anchor name (e.g.:  --anchorname)
-	if (options.anchor) { 
+	if (anchor != '') {
 		// if it wasn't given with the prepended -- then just add them
-		if (options.anchor.slice(0,2) != '--') { options.anchor = '--' + options.anchor; }
+		if (anchor.slice(0,2) != '--') { anchor = '--' + options.anchor; }
 		
 		// anchor name 
-		popoverDiv.style.positionAnchor = options.anchor; 
-	
+		popoverDiv.style.positionAnchor = anchor; 
+		popoverDiv.style.margin = anchorMargin;
+		popoverDiv.style.bottom = anchorBottom;
+		popoverDiv.style.insetArea = anchorInsetArea;
+		
 		// anchor to an element by ID by adding the style of anchor-name: --name to the specified ID
-		if (options.anchorToId) {
-			if (document.getElementById(options.anchorToId)) {
-				document.getElementById(options.anchorToId).style.anchorName = options.anchor;
+		if (anchorToId) {
+			if (document.getElementById(anchorToId)) {
+				document.getElementById(anchorToId).style.anchorName = anchor;
 			}
 		}
-	
-		// default margin if an anchor is specified
-		let anchorMargin = '.5rem 0';
-		popoverDiv.style.margin = anchorMargin;
-	
-		let anchorBottom = 'anchor(top)';
-		if (options.anchorBottom) { anchorBottom = options.anchorBottom; }
-		popoverDiv.style.bottom = anchorBottom;
-		
-		let anchorInsetArea = 'bottom';
-		if (options.anchorInsetArea) { anchorInsetArea = options.anchorInsetArea; }
-		popoverDiv.style.insetArea = anchorInsetArea;
-	}
-	
-	if (options.margin) { 
-		popoverDiv.style.margin = options.margin; 
 	}
 	
 	
 	// tooltip arrow
-	let tooltipArrow = '';
-	let tooltipArrowColor = 'black';
-	if (options.tooltipArrow) {
-		let tooltipArrow = options.tooltipArrow;
-		
-		if (options.tooltipArrowColor) { tooltipArrowColor = options.tooltipArrowColor; }
-		
+	if (tooltipArrow) {
 		// top - no diag (default top center)
 		let tooltipArrowBottom = '90%';
 		let tooltipArrowLeft = '50%';
@@ -262,8 +228,8 @@ function bobpop(options = []) {
 			popoverDiv.remove();
 			styleManager.remove('#' + id + '::before');
 			
-			if (options.anchorToId && document.getElementById(options.anchorToId)) {
-				document.getElementById(options.anchorToId).style.anchorName = '';
+			if (anchorToId && document.getElementById(anchorToId)) {
+				document.getElementById(anchorToId).style.anchorName = '';
 			}
 		}
 	});
