@@ -34,6 +34,7 @@
 **Examples**
 
 - A light-dismissed, very simple, and generic error messsage.
+See: [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/BagjGzo "codepen")
 ````
 bobpop({
 	title: 'Error!',
@@ -43,6 +44,7 @@ bobpop({
 
 
 - A hard-dismissed, very simple, and generic error messsage.
+See: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/mdZVQVN "codepen")
 ````
 bobpop({
 	type: 'manual',
@@ -53,6 +55,7 @@ bobpop({
 
 
 - Anchored to a specific DOM element with a "tooltip arrow" pointing to it
+See: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/WNqrYQx "codepen")
 ````
 bobpop({
 	title: 'Error!',
@@ -64,7 +67,8 @@ bobpop({
 ````
 
 
-- A light-dismissed alert hiding the "X" close button, a custom background, anchored to a specific DOM element, custom HTML in the title, and a red tooltip arrow
+- A light-dismissed alert hiding the "X" close button, a custom background, anchored to a specific DOM element, custom HTML in the title, and a red tooltip arrow.
+See: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
 ````
 bobpop({
 	title: '<div style="text-align: center;">Tooltip</div>',
