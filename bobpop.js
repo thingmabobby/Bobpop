@@ -130,10 +130,8 @@ function bobpop({
 		popoverDiv.style.insetArea = anchorInsetArea;
 		
 		// anchor to an element by ID by adding the style of anchor-name: --name to the specified ID
-		if (anchorToId) {
-			if (document.getElementById(anchorToId)) {
-				document.getElementById(anchorToId).style.anchorName = anchor;
-			}
+		if (anchorToId && document.getElementById(anchorToId)) {
+			document.getElementById(anchorToId).style.anchorName = anchor;
 		}
 	}
 	
