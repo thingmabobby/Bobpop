@@ -99,6 +99,8 @@ function bobpop({
 		xbutton.id = id + '_xbutton';
 		xbutton.setAttribute('popovertarget', id);
 		xbutton.setAttribute('popovertargetaction', 'hide');
+		xbutton.setAttribute('onmouseover','this.style.transform = \'scale(1.2)\'');
+		xbutton.setAttribute('onmouseout','this.style.transform = \'none\'');
 	}
 	
 	// create the title div 
