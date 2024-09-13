@@ -14,6 +14,8 @@
 // closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: ❌)
 // hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to auto
 //
+// maxHeight			CSS max-height (default: 90vh)
+// scrollbarWidth		CSS Scrollbar Width (default: thin)
 // border:				CSS border (default: none)
 // borderRadius:		CSS border-radius (default: 15px)
 // padding:				CSS padding (default: 15px)
@@ -48,6 +50,8 @@ function bobpop({
 	type = 'auto',
 	title = 'Error!',
 	body = 'An error occured!',
+	maxHeight = '90vh',
+	scrollbarWidth = 'thin',
 	border = 'none',
 	padding = '15px',
 	borderRadius = '15px',
@@ -69,8 +73,19 @@ function bobpop({
 	let popoverDiv = document.createElement('div');
 	document.body.appendChild(popoverDiv);
 	
+	// if the id already exists then add a random string of numbers to the end to make a different ID (keep generating new ones in case the last one is somehow in use)
+	if (document.getElementById(id)) {
+		while (document.getElementById(id)) {
+			let random = Date.now() + '-' + Math.random().toString(36).substring(2, 15);
+			id = 'bobpop' + random;
+		}
+	}
 	popoverDiv.setAttribute('id',id);
+	
+	
 	popoverDiv.setAttribute('popover', type);
+	popoverDiv.style.maxHeight = maxHeight;
+	popoverDiv.style.scrollbarWidth = scrollbarWidth;
 	popoverDiv.style.border = border; 
 	popoverDiv.style.padding = padding; 
 	popoverDiv.style.borderRadius = borderRadius; 
@@ -87,10 +102,15 @@ function bobpop({
 	if (!hideCloseButton) {
 		let xbuttonDiv = document.createElement('div');
 		popoverDiv.appendChild(xbuttonDiv);
-		xbuttonDiv.style.textAlign = 'right';
+		xbuttonDiv.style.position = 'absolute';
+		xbuttonDiv.style.right =  '0.25rem';
+		xbuttonDiv.style.top = '0.5rem';
 	
 		let xbutton = document.createElement('button');
 		xbuttonDiv.appendChild(xbutton);
+		xbutton.style.width = 'fit-content';
+		xbutton.style.padding = '5px';
+		xbutton.style.margin = '0px';
 		xbutton.style.border = 'none';
 		xbutton.style.background = 'transparent';
 		xbutton.style.cursor = 'pointer';
@@ -225,7 +245,19 @@ function bobpop({
 	popoverDiv.addEventListener('toggle', (e) => {
 		if (e.newState === 'closed') {
 			popoverDiv.removeEventListener('toggle', e);
-			popoverDiv.remove();
+			
+			// if there are no transitions applied to the popover then just remove it from the DOM
+			if (hasTransitionProperty(popoverDiv) === false) {
+				popoverDiv.remove();
+			}
+			
+			// if there is a transition detected on the popover then wait for it to finish and then remove it from the DOM
+			listenForTransitions(popoverDiv, isTransitioning => {
+				if (isTransitioning === false) {
+					popoverDiv.remove();
+				}
+			});
+			
 			styleManager.remove('#' + id + '::before');
 			
 			if (anchorToId && document.getElementById(anchorToId)) {
@@ -233,6 +265,24 @@ function bobpop({
 			}
 		}
 	});
+}
+
+// function to check if an element has a transition duration of 0s or not to detect if it has a css transition applied to it (might be a better way to do this...)
+function hasTransitionProperty(element) {
+    const computedStyle = window.getComputedStyle(element);
+    const transition = computedStyle.getPropertyValue('transition-duration');
+    return transition && transition.trim() !== '0s';
+}
+
+// function to listen for when a transition ends so we can remove the bobpop element after the animation ends
+function listenForTransitions(element, callback) {
+    const transitionEndHandler = event => {
+        callback(false); // Transition ended
+        element.removeEventListener('transitionend', transitionEndHandler);
+    };
+
+    element.addEventListener('transitionend', transitionEndHandler);
+    callback(true); // Transition started
 }
 
 
