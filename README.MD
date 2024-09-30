@@ -13,7 +13,7 @@
 | body | The body of the popover (can be HTML) |
 | closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: ❌) |
 | hideCloseButton | True/false - hides the "X" dismissal button only if type is set to auto |
-| showOkButton | True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover |
+| showOkButton | True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
 | okButtonText | Text for the Ok button (default: "Ok") |
 | bobpopOnOpen | This will run an anonymous function you provide when the popover is opened |
 | bobpopOnClose | This will run an anonymous function you provide when the popover is closed |
@@ -43,7 +43,7 @@
 
 | Custom Function | Description |
 | --------- | --------- |
-| bobpopCloseAll() | Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them |
+| bobpopCloseAll() | Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM) |
 
 **Examples**
 
