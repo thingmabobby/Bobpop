@@ -31,9 +31,8 @@
 | margin | CSS margin (default: unset, default if anchor is specified: .5rem 0)  |
 | anchor | CSS anchor name to attach it to (e.g.: --anchorname)  |
 | anchorToId | Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it  |
-| anchorBottom | CSS bottom (default: anchor(top))  |
-| anchorInsetArea |  CSS inset-area (default: bottom) |
-| tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: top center).  The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically. |
+| anchorPositionArea |  CSS position-area (default: bottom - can be many things like bottom right, top left, end end, start end, etc.) |
+| tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: top center).  The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically (top left, top center, top right, left middle, right middle, bottom left, bottom center, bottom right). |
 | tooltipArrowColor | The color of the tooltip arrow. (default: black) |
 | titlePadding | CSS padding for the title div (default: 5px 0px) |
 | titleBorderSize | CSS size for the title div border-bottom (default: 1px) |

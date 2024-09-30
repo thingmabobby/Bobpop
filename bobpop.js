@@ -37,11 +37,10 @@
 // 
 // anchor: 				CSS anchor name to attach it to (e.g.: --anchorname)
 // anchorToId:			Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it
-// anchorBottom:		CSS bottom (default: anchor(top))
-// anchorPositionArea:	CSS position-area (default: bottom)
+// anchorPositionArea:	CSS position-area (default: bottom - can be many things like bottom right, top left, end end, start end, etc.)
 //
 // tooltipArrow:		Displays an arrow pointing outwards in the specified placement. (default: top center)
-//							- The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically.
+//							- The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically (top left, top center, top right, left middle, right middle, bottom left, bottom center, bottom right).
 // tooltipArrowColor:	The color of the tooltip arrow. (default: black)
 //						 ________________________________________________________________________________________
 //						|																				 	   	 |
@@ -107,12 +106,12 @@
 function bobpop({
 	id = 'bobpop',
 	type = 'auto',
-	title = 'Error!',
+	title = '',
 	titleBorderSize = '1px',
 	titleBorderType = 'dashed',
 	titleBorderColor = '#00000059',
 	titlePadding = '5px 0px',
-	body = 'An error occured!',
+	body = '',
 	maxHeight = '90vh',
 	scrollbarWidth = 'thin',
 	border = 'none',
@@ -130,7 +129,6 @@ function bobpop({
 	anchor = '',
 	anchorToId = '',
 	anchorMargin = '.5rem 0',
-	anchorBottom = 'anchor(top)',
 	anchorPositionArea = 'bottom',
 	margin = '',
 	tooltipArrow = '',
@@ -199,6 +197,9 @@ function bobpop({
 	titleDiv.style.fontSize = '1.2rem';
 	titleDiv.style.marginBottom = '15px';
 	titleDiv.style.borderBottom = titleBorderSize + ' ' + titleBorderType + ' ' + titleBorderColor;
+	
+	if (title == 'none' || title == '') { titlePadding = '0px;'; titleDiv.style.border = 'none'; }
+	
 	titleDiv.style.padding = titlePadding;
 	titleDiv.innerHTML = title;
 	titleDiv.setAttribute('id',id + '_title');
@@ -224,7 +225,6 @@ function bobpop({
 		// anchor name 
 		popoverDiv.style.positionAnchor = anchor; 
 		popoverDiv.style.margin = anchorMargin;
-		popoverDiv.style.bottom = anchorBottom;
 		popoverDiv.style.positionArea = anchorPositionArea;
 		
 		// anchor to an element by ID by adding the style of anchor-name: --name to the specified ID
@@ -237,69 +237,95 @@ function bobpop({
 	// tooltip arrow
 	if (tooltipArrow) {
 		// top - no diag (default top center)
-		let tooltipArrowBottom = '90%';
+		let tooltipArrowTop = '5%';
+		let tooltipArrowRight = '';
+		let tooltipArrowBottom = '';
 		let tooltipArrowLeft = '50%';
 		let tooltipArrowBorderColor = 'transparent transparent ' + tooltipArrowColor;
 		
 		if (tooltipArrow == 'top left') {
+			tooltipArrowTop = '5%';
+			tooltipArrowRight = '';
 			tooltipArrowLeft = '10%';
+			tooltipArrowBottom = '';
 		}
 		if (tooltipArrow == 'top right') {
-			tooltipArrowLeft = '90%';
+			tooltipArrowTop = '5%';
+			tooltipArrowRight = '10%';
+			tooltipArrowBottom = '';
+			tooltipArrowLeft = '';
 		}
 		
 		// bottom - no diag
 		if (tooltipArrow == 'bottom left') {
-			tooltipArrowBottom = '0%';
+			tooltipArrowTop = '';
+			tooltipArrowRight = '';
+			tooltipArrowBottom = '5%';
 			tooltipArrowLeft = '10%';
 			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent';
 		}
 		if (tooltipArrow == 'bottom center') {
-			tooltipArrowBottom = '0%';
+			tooltipArrowTop = '';
+			tooltipArrowRight = '';
+			tooltipArrowBottom = '5%';
 			tooltipArrowLeft = '50%';
 			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent';	
 		}
 		if (tooltipArrow == 'bottom right') {
-			tooltipArrowBottom = '0%';
-			tooltipArrowLeft = '90%';
+			tooltipArrowTop = '';
+			tooltipArrowRight = '10%';
+			tooltipArrowBottom = '5%';
+			tooltipArrowLeft = '';
 			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent';
 		}
 		
 		// left side (left top and left bottom are diags)
 		if (tooltipArrow == 'left top') {
-			tooltipArrowBottom = '80%';
-			tooltipArrowLeft = '8%';
+			tooltipArrowTop = '5%';
+			tooltipArrowRight = '';
+			tooltipArrowBottom = '';
+			tooltipArrowLeft = '5%';
 			tooltipArrowBorderColor = tooltipArrowColor + ' transparent transparent ' + tooltipArrowColor;
 		}
-		if (tooltipArrow == 'left ceter') {
-			tooltipArrowBottom = '50%';
-			tooltipArrowLeft = '0%';
+		if (tooltipArrow == 'left middle') {
+			tooltipArrowTop = '50%';
+			tooltipArrowRight = '';
+			tooltipArrowBottom = '';
+			tooltipArrowLeft = '5';
 			tooltipArrowBorderColor = 'transparent ' + tooltipArrowColor + ' transparent transparent';
 		}
 		if (tooltipArrow == 'left bottom') {
+			tooltipArrowTop = '';
+			tooltipArrowRight = '';
 			tooltipArrowBottom = '5%';
-			tooltipArrowLeft = '6%';
+			tooltipArrowLeft = '5%';
 			tooltipArrowBorderColor = 'transparent transparent ' + tooltipArrowColor + ' ' + tooltipArrowColor;
 		}
 		
 		// right side (right top and right bottom are diags)
 		if (tooltipArrow == 'right top') {
-			tooltipArrowBottom = '80%';
-			tooltipArrowLeft = '92%';
+			tooltipArrowTop = '5%';
+			tooltipArrowRight = '5%';
+			tooltipArrowBottom = '';
+			tooltipArrowLeft = '';
 			tooltipArrowBorderColor = tooltipArrowColor + ' ' + tooltipArrowColor + ' transparent transparent';
 		}
-		if (tooltipArrow == 'right center') {
-			tooltipArrowBottom = '50%';
-			tooltipArrowLeft = '90%';
+		if (tooltipArrow == 'right middle') {
+			tooltipArrowTop = '50%';
+			tooltipArrowRight = '5%';
+			tooltipArrowBottom = '';
+			tooltipArrowLeft = '';
 			tooltipArrowBorderColor = 'transparent transparent transparent ' + tooltipArrowColor;
 		}
 		if (tooltipArrow == 'right bottom') {
-			tooltipArrowBottom = '6%';
-			tooltipArrowLeft = '93%';
+			tooltipArrowTop = '5%';
+			tooltipArrowRight = '';
+			tooltipArrowBottom = '5%';
+			tooltipArrowLeft = '';
 			tooltipArrowBorderColor = 'transparent ' + tooltipArrowColor + ' ' + tooltipArrowColor + ' transparent';
 		}
 		
-		styleManager.add('#' + id + '::before','content: "";bottom: ' + tooltipArrowBottom + ';left: ' + tooltipArrowLeft + ';border: solid transparent;height: 0;width: 0;position: absolute;pointer-events: none;border-color: ' + tooltipArrowBorderColor + ';border-width: 8px;margin-left: -8px;');
+		styleManager.add('#' + id + '::before','content: "";top: ' +tooltipArrowTop + ';right: ' + tooltipArrowRight + ';bottom: ' + tooltipArrowBottom + ';left: ' + tooltipArrowLeft + ';border: solid transparent;height: 0;width: 0;position: absolute;pointer-events: none;border-color: ' + tooltipArrowBorderColor + ';border-width: 8px;margin-left: -8px;');
 	}
 	
 	
