@@ -19,6 +19,8 @@
 // body: 				The body of the popover (can be HTML)
 // closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: ❌)
 // hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to auto
+// showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover
+// okButtonText:		Text for the Ok button (default: "Ok")
 //
 // maxHeight			CSS max-height (default: 90vh)
 // scrollbarWidth		CSS Scrollbar Width (default: thin)
@@ -118,6 +120,8 @@ function bobpop({
 	background = 'pink',
 	boxShadow = 'rgba(0, 0, 0, 0.8) 0px 0px 0px 100vmax',
 	hideCloseButton = false,
+	showOkButton = false,
+	okButtonText = 'Ok',
 	closeButtonText = '❌',
 	position = 'fixed',
 	anchor = '',
@@ -145,6 +149,7 @@ function bobpop({
 	
 	
 	popoverDiv.setAttribute('popover', type);
+	popoverDiv.classList.add('bobpopPopover');
 	popoverDiv.style.maxHeight = maxHeight;
 	popoverDiv.style.scrollbarWidth = scrollbarWidth;
 	popoverDiv.style.border = border; 
@@ -199,6 +204,11 @@ function bobpop({
 	// create the body div
 	let bodyDiv = document.createElement('div');
 	popoverDiv.appendChild(bodyDiv);
+	
+	// append an Ok button to the bottom of the body to dismiss the popover if desired 
+	let okButton = '<div style="margin-top: 1rem;"><button popovertarget="' + popoverDiv.id + '">' + okButtonText + '</button></div>';
+	if (showOkButton) { body += okButton; }
+	
 	bodyDiv.innerHTML = body;
 	bodyDiv.setAttribute('id',id + '_body');
 	
@@ -341,6 +351,12 @@ function bobpop({
 	popoverDiv.showPopover();
 }
 
+// function to close all bobpop popovers based on them having the bobpopPopover class
+function bobpopCloseAll() {
+	document.querySelectorAll('.bobpopPopover').forEach(bobpop => {
+		bobpop.hidePopover();
+	})
+}
 
 // function to check if an element has a transition duration of 0s or not to detect if it has a css transition applied to it (might be a better way to do this...)
 function hasTransitionProperty(element) {

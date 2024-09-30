@@ -13,6 +13,8 @@
 | body | The body of the popover (can be HTML) |
 | closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: ❌) |
 | hideCloseButton | True/false - hides the "X" dismissal button only if type is set to auto |
+| showOkButton | True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover |
+| okButtonText | Text for the Ok button (default: "Ok") |
 | bobpopOnOpen | This will run an anonymous function you provide when the popover is opened |
 | bobpopOnClose | This will run an anonymous function you provide when the popover is closed |
 
