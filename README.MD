@@ -9,16 +9,19 @@
 | ------------ | ------------ |
 | id  | The DOM ID to specify to be used (default: bobpop)  |
 | type | Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify automatic to make them hit the "X" to dismiss it (escape will not dismiss using manual so avoid manual if accessibility is a concern)  |
-| title  | The header title of the popover (can be HTML)   |
+| title | The header title of the popover (can be HTML)   |
 | body | The body of the popover (can be HTML) |
 | closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: ❌) |
-| hideCloseButton| True/false - hides the "X" dismissal button only if type is set to auto |
+| hideCloseButton | True/false - hides the "X" dismissal button only if type is set to auto |
+| bobpopOnOpen | This will run an anonymous function you provide when the popover is opened |
+| bobpopOnClose | This will run an anonymous function you provide when the popover is closed |
 
 |  Style Option | Description  |
 | ------------ | ------------ |
 | border  | CSS border (default: none)  |
 | borderRadius | CSS border-radius (default: 15px)  |
 | padding  | CSS padding (default: 15px)  |
+| fontFamily | CSS font-family (default: sans-serif) |
 | color | CSS font color (default: black)  |
 | background | CSS background (default: pink)  |
 | boxShadow | CSS box-shadow (default cover backdrop with a mask of opacity) |
@@ -30,6 +33,10 @@
 | anchorInsetArea |  CSS inset-area (default: bottom) |
 | tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: top center).  The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically. |
 | tooltipArrowColor | The color of the tooltip arrow. (default: black) |
+| titlePadding | CSS padding for the title div (default: 5px 0px) |
+| titleBorderSize | CSS size for the title div border-bottom (default: 1px) |
+| titleBorderType | CSS border type for the title div border-bottom (default: dashed) |
+| titleBorderColor | CSS border color for the title div border-bottom (default: #00000059) |
 
 **Examples**
 
@@ -78,3 +85,37 @@ bobpop({
 	tooltipArrowColor: 'red'
 })
 ````
+
+- Here's an example using bobpopOnOpen to open a manually-dismissed bobpop with a form in the body that also has a submit button to check validity and then run a function. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/wvVKQyQ "codepen")
+```
+function addUser() {
+	const bodyhtml = `
+		<p>This will add a new user.</p>
+		<form id="addUser">
+			User Name: <input type="text" id="newusername" autofocus required>
+			<button id='addUserSubmitButton'>Add</button>
+		</form>
+	`;
+
+	bobpop({
+		title: 'Add User',
+		type: 'manual',
+		background: '#ddf0ff',
+		body: bodyhtml,
+		bobpopOnOpen: () => {
+			document.getElementById('addUser').addEventListener('submit', (event) => {
+				event.preventDefault();				
+				const isValid = document.getElementById('addUser').checkValidity();
+				
+				if (isValid) {
+					addUserSubmit();
+				}
+			});
+		}
+	})
+}
+
+function addUserSubmit() {
+	console.log('do something!');
+}
+```

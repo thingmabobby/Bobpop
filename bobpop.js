@@ -8,8 +8,14 @@
 // OPTIONS:
 // 
 // id: 					The DOM ID to specify to be used (default: bobpop)
-// type: 				Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify automatic to make them hit the "X" to dismiss it (escape won't dismiss using manual so avoid manual if accessibility is a concern)
+// type: 				Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify "manual" to make them hit the "X" to dismiss it (escape won't dismiss using manual so avoid manual if accessibility is a concern)
+//
 // title:				The header title of the popover (can be HTML) 
+// titlePadding:		CSS padding for the title div (default: 5px 0px)
+// titleBorderSize:		CSS size for the title div border-bottom (default: 1px)
+// titleBorderType:		CSS border type for the title div border-bottom (default: dashed)
+// titleBorderColor:	CSS border color for the title div border-bottom (default: #00000059)
+//
 // body: 				The body of the popover (can be HTML)
 // closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: ❌)
 // hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to auto
@@ -19,6 +25,7 @@
 // border:				CSS border (default: none)
 // borderRadius:		CSS border-radius (default: 15px)
 // padding:				CSS padding (default: 15px)
+// fontFamily			CSS font-family (default: sans-serif)
 // color: 				CSS font color (default: black)
 // background: 			CSS background (default: pink)
 // boxShadow: 			CSS box-shadow (default cover backdrop with a mask of opacity)
@@ -29,7 +36,7 @@
 // anchor: 				CSS anchor name to attach it to (e.g.: --anchorname)
 // anchorToId:			Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it
 // anchorBottom:		CSS bottom (default: anchor(top))
-// anchorInsetArea:		CSS inset-area (default: bottom)
+// anchorPositionArea:	CSS position-area (default: bottom)
 //
 // tooltipArrow:		Displays an arrow pointing outwards in the specified placement. (default: top center)
 //							- The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically.
@@ -44,17 +51,69 @@
 //						|________________________________________________________________________________________|
 //
 // 
+// bobpopOnOpen:		Will run an anonymous function you provide when the popover is opened.
+//							Example to open a bobpop and have a form in the body 
+//							with a submit button to check validity and run a function you want:
+//
+//								function addUser() {
+//									const bodyhtml = `
+//										<p>This will add a new user.</p>
+//										<form id="addUser">
+//											User Name: <input type="text" id="newusername" autofocus required>
+//											<button id='addUserSubmitButton'>Add</button>
+//										</form>
+//									`;
+//
+//									bobpop({
+//										title: 'Add User',
+//										type: 'manual',
+//										background: '#ddf0ff',
+//										body: bodyhtml,
+//										bobpopOnOpen: () => {
+//											document.getElementById('addUser').addEventListener('submit', (event) => {
+//												event.preventDefault();				
+//												const isValid = document.getElementById('addUser').checkValidity();
+//												
+//												if (isValid) {
+//													addUserSubmit();
+//												}
+//											});
+//										}
+//									})
+//								}
+//
+//								function addUserSubmit() {
+//									// do something
+//								}
+//
+//
+// bobpopOnClose:		Will run an anonymous function you provide when the popover is closed.
+//							Example:
+//								bobpop({
+//									id: 'bobpop_warning',
+//									title: 'Error',
+//									body: 'That username is already taken! Please enter another.',
+//									bobpopOnClose: () => {
+//										document.getElementById('newusername').value = '';
+//										document.getElementById('newusername').focus();
+//									}
+//								})
 */
 function bobpop({
 	id = 'bobpop',
 	type = 'auto',
 	title = 'Error!',
+	titleBorderSize = '1px',
+	titleBorderType = 'dashed',
+	titleBorderColor = '#00000059',
+	titlePadding = '5px 0px',
 	body = 'An error occured!',
 	maxHeight = '90vh',
 	scrollbarWidth = 'thin',
 	border = 'none',
 	padding = '15px',
 	borderRadius = '15px',
+	fontFamily = 'sans-serif',
 	color = 'black',
 	background = 'pink',
 	boxShadow = 'rgba(0, 0, 0, 0.8) 0px 0px 0px 100vmax',
@@ -65,10 +124,12 @@ function bobpop({
 	anchorToId = '',
 	anchorMargin = '.5rem 0',
 	anchorBottom = 'anchor(top)',
-	anchorInsetArea = 'bottom',
+	anchorPositionArea = 'bottom',
 	margin = '',
 	tooltipArrow = '',
 	tooltipArrowColor = 'black',
+	bobpopOnOpen = () => {},
+	bobpopOnClose = () => {}
 }) {	
 	let popoverDiv = document.createElement('div');
 	document.body.appendChild(popoverDiv);
@@ -129,6 +190,8 @@ function bobpop({
 	titleDiv.style.fontWeight = 'bold';
 	titleDiv.style.fontSize = '1.2rem';
 	titleDiv.style.marginBottom = '15px';
+	titleDiv.style.borderBottom = titleBorderSize + ' ' + titleBorderType + ' ' + titleBorderColor;
+	titleDiv.style.padding = titlePadding;
 	titleDiv.innerHTML = title;
 	titleDiv.setAttribute('id',id + '_title');
 	
@@ -149,7 +212,7 @@ function bobpop({
 		popoverDiv.style.positionAnchor = anchor; 
 		popoverDiv.style.margin = anchorMargin;
 		popoverDiv.style.bottom = anchorBottom;
-		popoverDiv.style.insetArea = anchorInsetArea;
+		popoverDiv.style.positionArea = anchorPositionArea;
 		
 		// anchor to an element by ID by adding the style of anchor-name: --name to the specified ID
 		if (anchorToId && document.getElementById(anchorToId)) {
@@ -238,12 +301,20 @@ function bobpop({
 	popoverDiv.setAttribute('aria-labelledby', id + '_title');
 	popoverDiv.setAttribute('aria-describedby', id + '_body');
 	
-	// show the popover
-	popoverDiv.showPopover();
-	
 	// add the event listener to remove it from the DOM and cleanup when it's been dismissed
 	popoverDiv.addEventListener('toggle', (e) => {
+		if (e.newState == 'open') {
+			if (typeof bobpopOnOpen === 'function') {
+				bobpopOnOpen();
+			}
+		}
+		
 		if (e.newState === 'closed') {
+			// execute anything from the bobpopOnClose trigger
+			if (typeof bobpopOnClose === 'function') {
+				bobpopOnClose();
+			}
+			
 			popoverDiv.removeEventListener('toggle', e);
 			
 			// if there are no transitions applied to the popover then just remove it from the DOM
@@ -265,7 +336,11 @@ function bobpop({
 			}
 		}
 	});
+	
+	// show the popover
+	popoverDiv.showPopover();
 }
+
 
 // function to check if an element has a transition duration of 0s or not to detect if it has a css transition applied to it (might be a better way to do this...)
 function hasTransitionProperty(element) {
