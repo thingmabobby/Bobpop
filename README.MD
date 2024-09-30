@@ -40,6 +40,11 @@
 | titleBorderType | CSS border type for the title div border-bottom (default: dashed) |
 | titleBorderColor | CSS border color for the title div border-bottom (default: #00000059) |
 
+
+| Custom Function | Description |
+| --------- | --------- |
+| bobpopCloseAll() | Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them |
+
 **Examples**
 
 - A light-dismissed, very simple, and generic error messsage. See example: [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/BagjGzo "codepen")
