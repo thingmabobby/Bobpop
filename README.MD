@@ -73,6 +73,7 @@ bobpop({
 	body: 'Something went wrong.',
 	anchor: '--myanchor',
 	anchorToId: 'myElement',
+	anchorPositionArea: 'end',
 	tooltipArrow: 'left top'
 })
 ````
@@ -81,7 +82,6 @@ bobpop({
 - A light-dismissed alert hiding the "X" close button, a custom background, anchored to a specific DOM element, custom HTML in the title, and a red tooltip arrow. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
 ````
 bobpop({
-	title: '<div style="text-align: center;">Tooltip</div>',
 	body: 'You could use this as a tooltip',
 	background: '#f0f0f0',
 	boxShadow: 'none',
