@@ -27,7 +27,8 @@
 | color | CSS font color (default: black)  |
 | background | CSS background (default: pink)  |
 | boxShadow | CSS box-shadow (default cover backdrop with a mask of opacity) |
-| maxHeight | CSS max-height for bobpop (default: 85svh) |
+| maxHeight | CSS max-height (default: 85svh) |
+| maxWidth | CSS max-height (default: 90vw) |
 | position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)  |
 | margin | CSS margin (default: unset, default if anchor is specified: .5rem 0)  |
 | anchor | CSS anchor name to attach it to (e.g.: --anchorname)  |

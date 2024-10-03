@@ -23,6 +23,7 @@
 // okButtonText:		Text for the Ok button (default: "Ok")
 //
 // maxHeight			CSS max-height (default: 85svh)
+// maxWidth				CSS max-width (default: 90vw)
 // scrollbarWidth		CSS Scrollbar Width (default: thin)
 // border:				CSS border (default: none)
 // borderRadius:		CSS border-radius (default: 15px)
@@ -113,6 +114,7 @@ function bobpop({
 	titlePadding = '5px 0px',
 	body = '',
 	maxHeight = '85svh',
+	maxWidth = '90vw',
 	scrollbarWidth = 'thin',
 	border = 'none',
 	padding = '15px',
@@ -152,6 +154,7 @@ function bobpop({
 	popoverDiv.setAttribute('popover', type);
 	popoverDiv.classList.add('bobpopPopover');
 	popoverDiv.style.maxHeight = maxHeight;
+	popoverDiv.style.maxWidth = maxWidth;
 	popoverDiv.style.scrollbarWidth = scrollbarWidth;
 	popoverDiv.style.border = border; 
 	popoverDiv.style.padding = padding; 
