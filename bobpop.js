@@ -22,7 +22,7 @@
 // showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false)
 // okButtonText:		Text for the Ok button (default: "Ok")
 //
-// maxHeight			CSS max-height (default: 90vh)
+// maxHeight			CSS max-height (default: 85svh)
 // scrollbarWidth		CSS Scrollbar Width (default: thin)
 // border:				CSS border (default: none)
 // borderRadius:		CSS border-radius (default: 15px)
@@ -112,7 +112,7 @@ function bobpop({
 	titleBorderColor = '#00000059',
 	titlePadding = '5px 0px',
 	body = '',
-	maxHeight = '90vh',
+	maxHeight = '85svh',
 	scrollbarWidth = 'thin',
 	border = 'none',
 	padding = '15px',
