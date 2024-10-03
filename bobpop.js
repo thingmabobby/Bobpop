@@ -198,7 +198,7 @@ function bobpop({
 	popoverDiv.appendChild(titleDiv);
 	titleDiv.style.fontWeight = 'bold';
 	titleDiv.style.fontSize = '1.2rem';
-	titleDiv.style.marginBottom = '15px';
+	titleDiv.style.margin = '1rem 0px';
 	titleDiv.style.borderBottom = titleBorderSize + ' ' + titleBorderType + ' ' + titleBorderColor;
 	
 	if (title == 'none' || title == '') { titlePadding = '0px;'; titleDiv.style.border = 'none'; }
