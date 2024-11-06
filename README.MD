@@ -40,6 +40,8 @@
 | titleBorderSize | CSS size for the title div border-bottom (default: 1px) |
 | titleBorderType | CSS border type for the title div border-bottom (default: dashed) |
 | titleBorderColor | CSS border color for the title div border-bottom (default: #00000059) |
+| titleTextAlign | CSS text-align for the title text (default: left) |
+| bodyTextAlign | CSS text-align for the body text (default: inherit) |
 
 
 | Custom Function | Description |

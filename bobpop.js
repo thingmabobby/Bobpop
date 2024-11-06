@@ -15,8 +15,10 @@
 // titleBorderSize:		CSS size for the title div border-bottom (default: 1px)
 // titleBorderType:		CSS border type for the title div border-bottom (default: dashed)
 // titleBorderColor:	CSS border color for the title div border-bottom (default: #00000059)
-//
+// titleTextAlign:		CSS text-align for the title text (default: left)
+
 // body: 				The body of the popover (can be HTML)
+// bodyTextAlign:		CSS text-align for the body text (default: inherit)
 // closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: ❌)
 // hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to auto
 // showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false)
@@ -108,11 +110,13 @@ function bobpop({
 	id = 'bobpop',
 	type = 'auto',
 	title = '',
+	titleTextAlign = 'left',
 	titleBorderSize = '1px',
 	titleBorderType = 'dashed',
 	titleBorderColor = '#00000059',
 	titlePadding = '5px 0px',
 	body = '',
+	bodyTextAlign = '',
 	maxHeight = '85svh',
 	maxWidth = '90vw',
 	scrollbarWidth = 'thin',
@@ -196,6 +200,7 @@ function bobpop({
 	// create the title div 
 	let titleDiv = document.createElement('div');
 	popoverDiv.appendChild(titleDiv);
+	titleDiv.style.textAlign = titleTextAlign;
 	titleDiv.style.fontWeight = 'bold';
 	titleDiv.style.fontSize = '1.2rem';
 	titleDiv.style.margin = '1rem 0px';
@@ -210,10 +215,11 @@ function bobpop({
 	
 	// create the body div
 	let bodyDiv = document.createElement('div');
+	bodyDiv.style.textAlign = bodyTextAlign;
 	popoverDiv.appendChild(bodyDiv);
 	
 	// append an Ok button to the bottom of the body to dismiss the popover if desired 
-	let okButton = '<div style="margin-top: 1rem;"><button popovertarget="' + popoverDiv.id + '">' + okButtonText + '</button></div>';
+	let okButton = '<div style="margin-top: 1rem; text-align: center;"><button popovertarget="' + popoverDiv.id + '">' + okButtonText + '</button></div>';
 	if (showOkButton) { body += okButton; }
 	
 	bodyDiv.innerHTML = body;
