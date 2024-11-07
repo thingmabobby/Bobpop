@@ -217,13 +217,17 @@ function bobpop({
 	let bodyDiv = document.createElement('div');
 	bodyDiv.style.textAlign = bodyTextAlign;
 	popoverDiv.appendChild(bodyDiv);
-	
-	// append an Ok button to the bottom of the body to dismiss the popover if desired 
-	let okButton = '<div style="margin-top: 1rem; text-align: center;"><button popovertarget="' + popoverDiv.id + '">' + okButtonText + '</button></div>';
-	if (showOkButton) { body += okButton; }
-	
 	bodyDiv.innerHTML = body;
 	bodyDiv.setAttribute('id',id + '_body');
+	
+	// append an Ok button to the bottom of the body to dismiss the popover if desired 
+	if (showOkButton) {
+		let okButtonDiv = document.createElement('div');
+		okButtonDiv.setAttribute('id',id + '_okButton');
+		let okButton = '<div style="margin-top: 1rem; text-align: center;"><button popovertarget="' + popoverDiv.id + '">' + okButtonText + '</button></div>';		
+		okButtonDiv.innerHTML = okButton;
+		popoverDiv.appendChild(okButtonDiv);		
+	}
 	
 	
 	// if an anchor is specified it needs to be passed as a css anchor name (e.g.:  --anchorname)
