@@ -11,10 +11,11 @@
 | type | Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify automatic to make them hit the "X" to dismiss it (escape will not dismiss using manual so avoid manual if accessibility is a concern)  |
 | title | The header title of the popover (can be HTML)   |
 | body | The body of the popover (can be HTML) |
-| closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: ❌) |
+| closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: an SVG red X) |
 | hideCloseButton | True/false - hides the "X" dismissal button only if type is set to auto |
 | showOkButton | True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
 | okButtonText | Text for the Ok button (default: "Ok") |
+| transition | True/false if the default fade/scale transition in and out is to be used (default: true) |
 | bobpopOnOpen | This will run an anonymous function you provide when the popover is opened |
 | bobpopOnClose | This will run an anonymous function you provide when the popover is closed |
 
@@ -22,10 +23,10 @@
 | ------------ | ------------ |
 | border  | CSS border (default: none)  |
 | borderRadius | CSS border-radius (default: 15px)  |
-| padding  | CSS padding (default: 15px)  |
+| padding  | CSS padding (default: 1rem)  |
 | fontFamily | CSS font-family (default: sans-serif) |
 | color | CSS font color (default: black)  |
-| background | CSS background (default: pink)  |
+| background | CSS background (default: none)  |
 | boxShadow | CSS box-shadow (default cover backdrop with a mask of opacity) |
 | maxHeight | CSS max-height (default: 85svh) |
 | maxWidth | CSS max-height (default: 90vw) |
@@ -34,19 +35,20 @@
 | anchor | CSS anchor name to attach it to (e.g.: --anchorname)  |
 | anchorToId | Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it  |
 | anchorPositionArea |  CSS position-area (default: bottom - can be many things like bottom right, top left, end end, start end, etc.) |
-| tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: top center).  The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically (top left, top center, top right, left middle, right middle, bottom left, bottom center, bottom right). |
+| tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: top center).  The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically (top left, top center, top right, left middle, right middle, bottom left, bottom center, bottom right). Please note: the arrow will not point correctly if anchor positioning is being used and it flips to stay on screen (e.g. set to top with arrow pointing down towards the anchor element, but user scrolls down and it shifts to bottom of anchor element, but arrow still points down instead of up) |
 | tooltipArrowColor | The color of the tooltip arrow. (default: black) |
-| titlePadding | CSS padding for the title div (default: 5px 0px) |
-| titleBorderSize | CSS size for the title div border-bottom (default: 1px) |
-| titleBorderType | CSS border type for the title div border-bottom (default: dashed) |
-| titleBorderColor | CSS border color for the title div border-bottom (default: #00000059) |
+| titlePadding | CSS padding for the title div (default: 0px 0px) |
+| titleMargin | CSS margin for the title div (default: .5rem 0). Note if a tooltip arrow is specified it will apply a title margin of 1rem 0. |
+| titleBorderSize | CSS size for the title div border-bottom (default: none) |
+| titleBorderType | CSS border type for the title div border-bottom (default: none) |
+| titleBorderColor | CSS border color for the title div border-bottom (default: none) |
 | titleTextAlign | CSS text-align for the title text (default: left) |
 | bodyTextAlign | CSS text-align for the body text (default: inherit) |
 
 
 | Custom Function | Description |
 | --------- | --------- |
-| bobpopCloseAll() | Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM) |
+| bobpopCloseAll() | Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM after waiting for the transition to end) |
 
 **Examples**
 

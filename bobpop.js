@@ -11,15 +11,16 @@
 // type: 				Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify "manual" to make them hit the "X" to dismiss it (escape won't dismiss using manual so avoid manual if accessibility is a concern)
 //
 // title:				The header title of the popover (can be HTML) 
-// titlePadding:		CSS padding for the title div (default: 5px 0px)
-// titleBorderSize:		CSS size for the title div border-bottom (default: 1px)
-// titleBorderType:		CSS border type for the title div border-bottom (default: dashed)
-// titleBorderColor:	CSS border color for the title div border-bottom (default: #00000059)
+// titlePadding:		CSS padding for the title div (default: 0px 0px)
+// titleMargin:			CSS margin for the title div (default: .5rem 0)
+// titleBorderSize:		CSS size for the title div border-bottom (default: none)
+// titleBorderType:		CSS border type for the title div border-bottom (default: none)
+// titleBorderColor:	CSS border color for the title div border-bottom (default: none)
 // titleTextAlign:		CSS text-align for the title text (default: left)
 
 // body: 				The body of the popover (can be HTML)
 // bodyTextAlign:		CSS text-align for the body text (default: inherit)
-// closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: ❌)
+// closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: an SVG red X)
 // hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to auto
 // showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false)
 // okButtonText:		Text for the Ok button (default: "Ok")
@@ -29,10 +30,10 @@
 // scrollbarWidth		CSS Scrollbar Width (default: thin)
 // border:				CSS border (default: none)
 // borderRadius:		CSS border-radius (default: 15px)
-// padding:				CSS padding (default: 15px)
+// padding:				CSS padding (default: 1rem)
 // fontFamily			CSS font-family (default: sans-serif)
 // color: 				CSS font color (default: black)
-// background: 			CSS background (default: pink)
+// background: 			CSS background (default: none)
 // boxShadow: 			CSS box-shadow (default cover backdrop with a mask of opacity)
 // 
 // position: 			CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)
@@ -44,6 +45,8 @@
 //
 // tooltipArrow:		Displays an arrow pointing outwards in the specified placement. (default: top center)
 //							- The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically (top left, top center, top right, left middle, right middle, bottom left, bottom center, bottom right).
+//						Please note: the arrow will not point correctly if anchor positioning is being used and it flips to stay on screen 
+//							(e.g. set to top with arrow pointing down towards the anchor element, but user scrolls down and it shifts to bottom of anchor element, but arrow still points down instead of up)
 // tooltipArrowColor:	The color of the tooltip arrow. (default: black)
 //						 ________________________________________________________________________________________
 //						|																				 	   	 |
@@ -54,7 +57,7 @@
 //						|left bottom - bottom left 			bottom center			  bottom right - right bottom|
 //						|________________________________________________________________________________________|
 //
-// 
+// transition:			True/false if the default fade/scale transition in and out is to be used (default: true)
 // bobpopOnOpen:		Will run an anonymous function you provide when the popover is opened.
 //							Example to open a bobpop and have a form in the body 
 //							with a submit button to check validity and run a function you want:
@@ -111,26 +114,32 @@ function bobpop({
 	type = 'auto',
 	title = '',
 	titleTextAlign = 'left',
-	titleBorderSize = '1px',
-	titleBorderType = 'dashed',
-	titleBorderColor = '#00000059',
-	titlePadding = '5px 0px',
+	titleBorderSize = '',
+	titleBorderType = '',
+	titleBorderColor = '',
+	titleMargin = '.5rem 0',
+	titlePadding = '0px 0px',
 	body = '',
 	bodyTextAlign = '',
 	maxHeight = '85svh',
 	maxWidth = '90vw',
 	scrollbarWidth = 'thin',
 	border = 'none',
-	padding = '15px',
+	padding = '1rem',
 	borderRadius = '15px',
 	fontFamily = 'sans-serif',
 	color = 'black',
-	background = 'pink',
+	background = '',
 	boxShadow = 'rgba(0, 0, 0, 0.8) 0px 0px 0px 100vmax',
 	hideCloseButton = false,
 	showOkButton = false,
 	okButtonText = 'Ok',
-	closeButtonText = '❌',
+	closeButtonText = `
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" focusable="false" style="stroke: red; stroke-width: 3; stroke-linecap: round; display: inline-block; vertical-align: middle;">
+			<line x1="4" y1="4" x2="20" y2="20"></line>
+			<line x1="20" y1="4" x2="4" y2="20"></line>
+		</svg>
+	`,
 	position = 'fixed',
 	anchor = '',
 	anchorToId = '',
@@ -139,6 +148,7 @@ function bobpop({
 	margin = '',
 	tooltipArrow = '',
 	tooltipArrowColor = 'black',
+	transition = true,
 	bobpopOnOpen = () => {},
 	bobpopOnClose = () => {}
 }) {	
@@ -183,7 +193,7 @@ function bobpop({
 		let xbutton = document.createElement('button');
 		xbuttonDiv.appendChild(xbutton);
 		xbutton.style.width = 'fit-content';
-		xbutton.style.padding = '5px';
+		xbutton.style.padding = '.25rem';
 		xbutton.style.margin = '0px';
 		xbutton.style.border = 'none';
 		xbutton.style.background = 'transparent';
@@ -203,7 +213,7 @@ function bobpop({
 	titleDiv.style.textAlign = titleTextAlign;
 	titleDiv.style.fontWeight = 'bold';
 	titleDiv.style.fontSize = '1.2rem';
-	titleDiv.style.margin = '1rem 0px';
+	titleDiv.style.margin = titleMargin;
 	titleDiv.style.borderBottom = titleBorderSize + ' ' + titleBorderType + ' ' + titleBorderColor;
 	
 	if (title == 'none' || title == '') { titlePadding = '0px;'; titleDiv.style.border = 'none'; }
@@ -252,7 +262,12 @@ function bobpop({
 	
 	
 	// tooltip arrow
+	// note: arrow will not point correctly if anchor positioning is being used and it flips to stay on screen 
+	// (e.g. set to top with arrow pointing down towards the anchor element, but user scrolls down and it shifts to bottom of anchor element, but arrow still points down instead of up)
 	if (tooltipArrow) {
+		// if a tooltip arrow is specified then set the title margin to allow space for it
+		titleDiv.style.margin = '1rem 0';
+		
 		// top - no diag (default top center)
 		let tooltipArrowTop = '5%';
 		let tooltipArrowRight = '';
@@ -373,25 +388,91 @@ function bobpop({
 			
 			popoverDiv.removeEventListener('toggle', e);
 			
+			
 			// if there are no transitions applied to the popover then just remove it from the DOM
 			if (hasTransitionProperty(popoverDiv) === false) {
 				popoverDiv.remove();
+				styleManager.remove('#' + id + '::before');
+				if (anchorToId && document.getElementById(anchorToId)) {
+					document.getElementById(anchorToId).style.anchorName = '';
+				}			
 			}
 			
 			// if there is a transition detected on the popover then wait for it to finish and then remove it from the DOM
 			listenForTransitions(popoverDiv, isTransitioning => {
 				if (isTransitioning === false) {
 					popoverDiv.remove();
+					styleManager.remove('#' + id + '::before');
+					if (anchorToId && document.getElementById(anchorToId)) {
+						document.getElementById(anchorToId).style.anchorName = '';
+					}								
 				}
 			});
-			
-			styleManager.remove('#' + id + '::before');
-			
-			if (anchorToId && document.getElementById(anchorToId)) {
-				document.getElementById(anchorToId).style.anchorName = '';
-			}
 		}
 	});
+	
+	// CSS fade and scale in/out transition for the popover
+	if (transition) {
+		const bobpopInjectCSS = () => {
+			const styleId = "bobpopTransitionStyles";
+
+			if (!document.getElementById(styleId)) {
+				const css = `
+				:where(.bobpopPopover) {
+					/* popover transition in/out */
+					&, &::backdrop {
+						transition: 
+							display .5s allow-discrete, 
+							overlay .5s allow-discrete, 
+							transform .5s,
+							opacity .5s;
+						opacity: 0;
+					}
+					  
+					/* open state */
+					&:popover-open {
+						opacity: 1;
+						transform: scale(1);
+						
+						&::backdrop {
+							opacity: 1;
+						}
+					}
+					  
+					/* offstage styles */
+					@starting-style {
+						&:popover-open {
+							transform: scale(0);
+							opacity: 0;
+						}
+						&:popover-open, &:popover-open::backdrop {
+							opacity: 0;
+						}
+					}
+
+					/* only scale if it's ok with the user */
+					@media (prefers-reduced-motion: no-preference) {
+						transform: scale(.95);
+					}
+
+					&::backdrop {
+						box-shadow: inset 0 0 0 1000px rgba(0,0,0,.5);
+					}
+				}
+				`;
+
+				const styleSheet = document.createElement("style");
+				styleSheet.type = "text/css";
+				styleSheet.id = styleId; // Assign a unique ID
+				styleSheet.textContent = css;
+
+				document.head.appendChild(styleSheet);
+			}
+		};
+
+		// call the function to inject the CSS
+		bobpopInjectCSS();
+	}
 	
 	// show the popover
 	popoverDiv.showPopover();
