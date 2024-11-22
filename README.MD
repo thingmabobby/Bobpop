@@ -44,11 +44,30 @@
 | titleBorderColor | CSS border color for the title div border-bottom (default: none) |
 | titleTextAlign | CSS text-align for the title text (default: left) |
 | bodyTextAlign | CSS text-align for the body text (default: inherit) |
-
+| theme | See "Themes" section |
 
 | Custom Function | Description |
 | --------- | --------- |
 | bobpopCloseAll() | Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM after waiting for the transition to end) |
+
+**THEMES:**
+
+You can style bobpop with a theme by using the theme option when calling it. E.g.: theme: 'fancy'
+
+| Theme   | Description |
+|---------|-------------|
+| dark    | A dark theme with a black background and white text, designed for low-light environments. |
+| light   | A light theme with a light grey background and dark text, ideal for bright environments. |
+| modern  | A modern theme with a blue gradient background, featuring a sleek, minimalistic design. |
+| fancy   | A vibrant gradient theme with purple and blue tones, offering a stylish and bold look. |
+| pastel  | A soft pastel gradient theme with light pink and orange hues, perfect for a gentle aesthetic. |
+| ocean   | A cool oceanic gradient with blue shades, evoking a calm and refreshing feel. |
+| nature  | A nature-inspired gradient theme with shades of green and blue, perfect for an earthy vibe. |
+| warm    | A warm gradient with soft orange and pink tones, giving off a cozy and inviting feeling. |
+| sleek   | A sleek, tech-inspired blue gradient theme with a clean and sharp design. |
+| retro   | A retro-inspired theme with yellow and orange gradients, giving a vintage yet vibrant look. |
+| elegant | An elegant gradient theme with blue and dark tones, creating a sophisticated atmosphere. |
+
 
 **Examples**
 

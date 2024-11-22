@@ -109,7 +109,7 @@
 // There's also a custom function that you can use:
 // bobpopCloseAll():  Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM)
 */
-function bobpop({
+function bobpop ({
 	id = 'bobpop',
 	type = 'auto',
 	title = '',
@@ -130,7 +130,7 @@ function bobpop({
 	fontFamily = 'sans-serif',
 	color = 'black',
 	background = '',
-	boxShadow = 'rgba(0, 0, 0, 0.8) 0px 0px 0px 100vmax',
+	boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)',
 	hideCloseButton = false,
 	showOkButton = false,
 	okButtonText = 'Ok',
@@ -149,6 +149,7 @@ function bobpop({
 	tooltipArrow = '',
 	tooltipArrowColor = 'black',
 	transition = true,
+	theme = 'default',
 	bobpopOnOpen = () => {},
 	bobpopOnClose = () => {}
 }) {	
@@ -166,6 +167,43 @@ function bobpop({
 	popoverDiv.setAttribute('id',id);
 	popoverDiv.setAttribute('popover', type);
 	popoverDiv.classList.add('bobpopPopover');
+	
+	switch (theme) {
+		case 'dark': 
+			background  = '#333'; color  = '#fff'; boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)'; padding = '10px'; border = 'none';
+			break;
+		case 'light':
+			background = '#eaeaea'; color = '#333'; boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'; padding = '10px'; border = '1px solid #ccc';
+			break;
+		case 'modern':
+			background = 'linear-gradient(135deg, #1e3c72, #2a5298)'; color = '#fff'; boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1)'; padding = '12px 24px'; borderRadius = '6px'; border = 'none';
+			break;
+		case 'fancy':
+			background = 'linear-gradient(135deg, #6a11cb, #2575fc)'; color = '#fff'; boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)'; padding = '15px'; border = 'none';
+			break;
+		case 'pastel':
+			background = 'linear-gradient(135deg, #f6d365, #fda085)'; color = '#333'; boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; padding = '12px 24px'; borderRadius = '8px'; border = '1px solid #f7a2b4';
+			break;
+		case 'ocean':
+			background = 'linear-gradient(135deg, #00b4d8, #0077b6)'; color = '#fff'; boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)'; padding = '12px 20px'; borderRadius = '6px'; border = 'none';
+			break;
+		case 'nature':
+			background = 'linear-gradient(135deg, #2c3e50, #4ca1af)'; color = '#fff'; boxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'; padding = '14px 28px'; borderRadius = '8px'; border = 'none';
+			break;
+		case 'warm':
+			background = 'linear-gradient(135deg, #ff7e5f, #feb47b)'; color = '#333'; boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; padding = '12px 24px'; borderRadius = '6px'; border = '1px solid #ffad9c';
+			break;
+		case 'sleek':
+			background = 'linear-gradient(135deg, #2a2a72, #009ffd)'; color = '#fff'; boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)'; padding = '12px 24px'; borderRadius = '6px'; border = 'none';
+			break;
+		case 'retro':
+			background = 'linear-gradient(135deg, #f1c40f, #e67e22)'; color = '#333'; boxShadow = '0 4px 10px rgba(0, 0, 0, 0.3)'; padding = '12px 24px'; borderRadius = '8px'; border = '1px solid #f39c12';
+			break;
+		case 'elegant':
+			background = 'linear-gradient(135deg, #4b79a1, #283e51)'; color = '#fff'; boxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'; padding = '14px 28px'; borderRadius = '8px'; border = '1px solid #1f3a5f';
+			break;
+	}
+
 	popoverDiv.style.maxHeight = maxHeight;
 	popoverDiv.style.maxWidth = maxWidth;
 	popoverDiv.style.scrollbarWidth = scrollbarWidth;
