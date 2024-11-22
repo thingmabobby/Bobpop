@@ -162,9 +162,8 @@ function bobpop({
 			id = 'bobpop' + random;
 		}
 	}
+	
 	popoverDiv.setAttribute('id',id);
-	
-	
 	popoverDiv.setAttribute('popover', type);
 	popoverDiv.classList.add('bobpopPopover');
 	popoverDiv.style.maxHeight = maxHeight;
@@ -179,8 +178,7 @@ function bobpop({
 	popoverDiv.style.position = position;
 	
 	if (type != 'auto') { hideCloseButton = false; }	
-	if (margin != '') { popoverDiv.style.margin = margin; }
-	
+	if (margin != '') { popoverDiv.style.margin = margin; }	
 	
 	// create the X button div & X button
 	if (!hideCloseButton) {
@@ -220,8 +218,7 @@ function bobpop({
 	
 	titleDiv.style.padding = titlePadding;
 	titleDiv.innerHTML = title;
-	titleDiv.setAttribute('id',id + '_title');
-	
+	titleDiv.setAttribute('id',id + '_title');	
 	
 	// create the body div
 	let bodyDiv = document.createElement('div');
@@ -237,8 +234,7 @@ function bobpop({
 		let okButton = '<div style="margin-top: 1rem; text-align: center;"><button popovertarget="' + popoverDiv.id + '">' + okButtonText + '</button></div>';		
 		okButtonDiv.innerHTML = okButton;
 		popoverDiv.appendChild(okButtonDiv);		
-	}
-	
+	}	
 	
 	// if an anchor is specified it needs to be passed as a css anchor name (e.g.:  --anchorname)
 	if (anchor != '') {
@@ -258,8 +254,7 @@ function bobpop({
 		if (anchorToId && document.getElementById(anchorToId)) {
 			document.getElementById(anchorToId).style.anchorName = anchor;
 		}
-	}
-	
+	}	
 	
 	// tooltip arrow
 	// note: arrow will not point correctly if anchor positioning is being used and it flips to stay on screen 
@@ -358,8 +353,7 @@ function bobpop({
 		}
 		
 		styleManager.add('#' + id + '::before','content: "";top: ' +tooltipArrowTop + ';right: ' + tooltipArrowRight + ';bottom: ' + tooltipArrowBottom + ';left: ' + tooltipArrowLeft + ';border: solid transparent;height: 0;width: 0;position: absolute;pointer-events: none;border-color: ' + tooltipArrowBorderColor + ';border-width: 8px;margin-left: -8px;');
-	}
-	
+	}	
 	
 	// remove anti-interaction just in case (I was using this in combination with another custom dialog I made and I disabled pointer events on the body while it was open)
 	popoverDiv.style.pointerEvents = 'all';
@@ -392,10 +386,7 @@ function bobpop({
 			// if there are no transitions applied to the popover then just remove it from the DOM
 			if (hasTransitionProperty(popoverDiv) === false) {
 				popoverDiv.remove();
-				styleManager.remove('#' + id + '::before');
-				if (anchorToId && document.getElementById(anchorToId)) {
-					document.getElementById(anchorToId).style.anchorName = '';
-				}			
+				styleManager.remove('#' + id + '::before');			
 			}
 			
 			// if there is a transition detected on the popover then wait for it to finish and then remove it from the DOM
@@ -403,9 +394,6 @@ function bobpop({
 				if (isTransitioning === false) {
 					popoverDiv.remove();
 					styleManager.remove('#' + id + '::before');
-					if (anchorToId && document.getElementById(anchorToId)) {
-						document.getElementById(anchorToId).style.anchorName = '';
-					}								
 				}
 			});
 		}
@@ -502,7 +490,6 @@ function listenForTransitions(element, callback) {
     element.addEventListener('transitionend', transitionEndHandler);
     callback(true); // Transition started
 }
-
 
 // add a stylesheet to the document (creates a pseudo element ::before style for the popover tooltip arrow option)
 // Reference: https://stackoverflow.com/a/28930990/104380
