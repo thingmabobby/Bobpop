@@ -3,6 +3,7 @@
 
  I originally wrote this to help me create popover API error alerts on top of my existing dialog modals, but I figured it can be used for any small alert or tooltip. This was mostly me just testing the Popover API and CSS anchors. It is pretty limited in what you can do with anchors, but I figured it was good enough as a test.
 
+
 **OPTIONS:**
 
 | Option   |   Description|
@@ -50,9 +51,12 @@
 | --------- | --------- |
 | bobpopCloseAll() | Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM after waiting for the transition to end) |
 
+
+
 **THEMES:**
 
-You can style bobpop with a theme by using the theme option when calling it. E.g.: theme: 'fancy'
+You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is added.
+Usage - theme: 'fancy'
 
 | Theme   | Description |
 |---------|-------------|
@@ -67,6 +71,7 @@ You can style bobpop with a theme by using the theme option when calling it. E.g
 | sleek   | A sleek, tech-inspired blue gradient theme with a clean and sharp design. |
 | retro   | A retro-inspired theme with yellow and orange gradients, giving a vintage yet vibrant look. |
 | elegant | An elegant gradient theme with blue and dark tones, creating a sophisticated atmosphere. |
+
 
 
 **Examples**

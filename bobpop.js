@@ -168,6 +168,11 @@ function bobpop ({
 	popoverDiv.setAttribute('popover', type);
 	popoverDiv.classList.add('bobpopPopover');
 	
+	// if the user's preference is dark mode then use the dark theme (assuming no theme choice has been made)
+	if (theme == 'default' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		theme = 'dark';
+    }
+	
 	switch (theme) {
 		case 'dark': 
 			background  = '#333'; color  = '#fff'; boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)'; padding = '10px'; border = 'none';
