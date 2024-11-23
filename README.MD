@@ -25,10 +25,10 @@
 | border  | CSS border (default: none)  |
 | borderRadius | CSS border-radius (default: 15px)  |
 | padding  | CSS padding (default: 1rem)  |
-| fontFamily | CSS font-family (default: sans-serif) |
-| color | CSS font color (default: black)  |
+| fontFamily | CSS font-family (default: none) |
+| color | CSS font color (default: none)  |
 | background | CSS background (default: none)  |
-| boxShadow | CSS box-shadow (default cover backdrop with a mask of opacity) |
+| boxShadow | CSS box-shadow (default: 0 4px 8px rgba(0, 0, 0, 0.5)) |
 | maxHeight | CSS max-height (default: 85svh) |
 | maxWidth | CSS max-height (default: 90vw) |
 | position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)  |
@@ -55,7 +55,7 @@
 
 **THEMES:**
 
-You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is added.
+You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is added. You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
 Usage - theme: 'fancy'
 
 | Theme   | Description |
@@ -71,7 +71,9 @@ Usage - theme: 'fancy'
 | sleek   | A sleek, tech-inspired blue gradient theme with a clean and sharp design. |
 | retro   | A retro-inspired theme with yellow and orange gradients, giving a vintage yet vibrant look. |
 | elegant | An elegant gradient theme with blue and dark tones, creating a sophisticated atmosphere. |
-
+| bootstrap | Moderately rounded corners, heavier shadows, classic typography. |
+| material | Slightly sharper look with a focus on prominent shadows and clean spacing. |
+| tailwind | Minimalistic design with soft shadows and neutral tones, ideal for modern aesthetics. |
 
 
 **Examples**

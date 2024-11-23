@@ -31,10 +31,10 @@
 // border:				CSS border (default: none)
 // borderRadius:		CSS border-radius (default: 15px)
 // padding:				CSS padding (default: 1rem)
-// fontFamily			CSS font-family (default: sans-serif)
-// color: 				CSS font color (default: black)
+// fontFamily			CSS font-family (default: none)
+// color: 				CSS font color (default: none)
 // background: 			CSS background (default: none)
-// boxShadow: 			CSS box-shadow (default cover backdrop with a mask of opacity)
+// boxShadow: 			CSS box-shadow (default: 0 4px 8px rgba(0, 0, 0, 0.5))
 // 
 // position: 			CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)
 // margin: 				CSS margin (default: unset, default if anchor is specified: .5rem 0)
@@ -108,6 +108,13 @@
 //
 // There's also a custom function that you can use:
 // bobpopCloseAll():  Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM)
+//
+// Themes:
+// 		usage -  theme: 'fancy'
+//		You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is added. 
+//		You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
+//
+//		Available themes: dark, light, modern, fancy, pastel, ocean, nature, warm, sleek, retro, elegant, bootstrap, material, tailwind
 */
 function bobpop ({
 	id = 'bobpop',
@@ -127,8 +134,8 @@ function bobpop ({
 	border = 'none',
 	padding = '1rem',
 	borderRadius = '15px',
-	fontFamily = 'sans-serif',
-	color = 'black',
+	fontFamily = '',
+	color = '',
 	background = '',
 	boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)',
 	hideCloseButton = false,
@@ -149,7 +156,7 @@ function bobpop ({
 	tooltipArrow = '',
 	tooltipArrowColor = 'black',
 	transition = true,
-	theme = 'default',
+	theme = '',
 	bobpopOnOpen = () => {},
 	bobpopOnClose = () => {}
 }) {	
@@ -169,55 +176,66 @@ function bobpop ({
 	popoverDiv.classList.add('bobpopPopover');
 	
 	// if the user's preference is dark mode then use the dark theme (assuming no theme choice has been made)
-	if (theme == 'default' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+	if (theme == '' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 		theme = 'dark';
     }
 	
+	let themeFontFamily = '', themeBackground = '', themeColor = '', themeBoxShadow = '', themePadding = '', themeBorder = '', themeBorderRadius = '';
 	switch (theme) {
 		case 'dark': 
-			background  = '#333'; color  = '#fff'; boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)'; padding = '10px'; border = 'none';
+			themeFontFamily = 'sans-serif'; themeBackground  = '#333'; themeColor  = '#fff'; themeBoxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)'; themePadding = '10px'; themeBorder = 'none';
 			break;
 		case 'light':
-			background = '#eaeaea'; color = '#333'; boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'; padding = '10px'; border = '1px solid #ccc';
+			themeFontFamily = 'sans-serif'; themeBackground = '#eaeaea'; themeColor = '#333'; themeBoxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'; themePadding = '10px'; themeBorder = '1px solid #ccc';
 			break;
 		case 'modern':
-			background = 'linear-gradient(135deg, #1e3c72, #2a5298)'; color = '#fff'; boxShadow = '0 6px 12px rgba(0, 0, 0, 0.1)'; padding = '12px 24px'; borderRadius = '6px'; border = 'none';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #1e3c72, #2a5298)'; themeColor = '#fff'; themeBoxShadow = '0 6px 12px rgba(0, 0, 0, 0.1)'; themePadding = '12px 24px'; themeBorderRadius = '6px'; themeBorder = 'none';
 			break;
 		case 'fancy':
-			background = 'linear-gradient(135deg, #6a11cb, #2575fc)'; color = '#fff'; boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)'; padding = '15px'; border = 'none';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #6a11cb, #2575fc)'; themeColor = '#fff'; themeBoxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)'; themePadding = '15px'; themeBorder = 'none';
 			break;
 		case 'pastel':
-			background = 'linear-gradient(135deg, #f6d365, #fda085)'; color = '#333'; boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; padding = '12px 24px'; borderRadius = '8px'; border = '1px solid #f7a2b4';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #f6d365, #fda085)'; themeColor = '#333'; themeBoxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; themePadding = '12px 24px'; themeBorderRadius = '8px'; themeBorder = '1px solid #f7a2b4';
 			break;
 		case 'ocean':
-			background = 'linear-gradient(135deg, #00b4d8, #0077b6)'; color = '#fff'; boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)'; padding = '12px 20px'; borderRadius = '6px'; border = 'none';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #00b4d8, #0077b6)'; themeColor = '#fff'; themeBoxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)'; themePadding = '12px 20px'; themeBorderRadius = '6px'; themeBorder = 'none';
 			break;
 		case 'nature':
-			background = 'linear-gradient(135deg, #2c3e50, #4ca1af)'; color = '#fff'; boxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'; padding = '14px 28px'; borderRadius = '8px'; border = 'none';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #2c3e50, #4ca1af)'; themeColor = '#fff'; themeBoxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'; themePadding = '14px 28px'; themeBorderRadius = '8px'; themeBorder = 'none';
 			break;
 		case 'warm':
-			background = 'linear-gradient(135deg, #ff7e5f, #feb47b)'; color = '#333'; boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; padding = '12px 24px'; borderRadius = '6px'; border = '1px solid #ffad9c';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #ff7e5f, #feb47b)'; themeColor = '#333'; themeBoxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)'; themePadding = '12px 24px'; themeBorderRadius = '6px'; themeBorder = '1px solid #ffad9c';
 			break;
 		case 'sleek':
-			background = 'linear-gradient(135deg, #2a2a72, #009ffd)'; color = '#fff'; boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)'; padding = '12px 24px'; borderRadius = '6px'; border = 'none';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #2a2a72, #009ffd)'; themeColor = '#fff'; themeBoxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)'; themePadding = '12px 24px'; themeBorderRadius = '6px'; themeBorder = 'none';
 			break;
 		case 'retro':
-			background = 'linear-gradient(135deg, #f1c40f, #e67e22)'; color = '#333'; boxShadow = '0 4px 10px rgba(0, 0, 0, 0.3)'; padding = '12px 24px'; borderRadius = '8px'; border = '1px solid #f39c12';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #f1c40f, #e67e22)'; themeColor = '#333'; themeBoxShadow = '0 4px 10px rgba(0, 0, 0, 0.3)'; themePadding = '12px 24px'; themeBorderRadius = '8px'; themeBorder = '1px solid #f39c12';
 			break;
 		case 'elegant':
-			background = 'linear-gradient(135deg, #4b79a1, #283e51)'; color = '#fff'; boxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'; padding = '14px 28px'; borderRadius = '8px'; border = '1px solid #1f3a5f';
+			themeFontFamily = 'sans-serif'; themeBackground = 'linear-gradient(135deg, #4b79a1, #283e51)'; themeColor = '#fff'; themeBoxShadow = '0 6px 12px rgba(0, 0, 0, 0.2)'; themePadding = '14px 28px'; themeBorderRadius = '8px'; themeBorder = '1px solid #1f3a5f';
+			break;
+		case 'bootstrap':
+			themeFontFamily = '-apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif'; themeBackground = '#ffffff'; themeColor = '#212529'; themeBoxShadow = '0 .5rem 1rem rgba(0, 0, 0, 0.15)'; themePadding = '0.75rem 1.25rem'; themeBorder = '1px solid #dee2e6'; themeBorderRadius = '0.375rem';
+			break;
+		case 'material':
+			themeFontFamily = 'Roboto, Arial, sans-serif'; themeBackground = '#ffffff'; themeColor = '#000000'; themeBoxShadow = '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06)'; themePadding = '16px'; themeBorder = 'none'; themeBorderRadius = '4px';
+			break;
+		case 'tailwind':
+			themeFontFamily = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif'; themeBackground = '#f9fafb'; themeColor = '#1f2937'; themeBoxShadow = '0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.1)'; themePadding = '1rem'; themeBorder = '1px solid #d1d5db'; themeBorderRadius = '0.5rem';
 			break;
 	}
-
+		
 	popoverDiv.style.maxHeight = maxHeight;
 	popoverDiv.style.maxWidth = maxWidth;
 	popoverDiv.style.scrollbarWidth = scrollbarWidth;
-	popoverDiv.style.border = border; 
-	popoverDiv.style.padding = padding; 
-	popoverDiv.style.borderRadius = borderRadius; 
-	popoverDiv.style.color = color;
-	popoverDiv.style.background = background;
-	popoverDiv.style.boxShadow = boxShadow;
+	popoverDiv.style.padding = padding || themePadding; 
+	popoverDiv.style.fontFamily = fontFamily || themeFontFamily;
+	popoverDiv.style.border = border || themeBorder; 
+	popoverDiv.style.borderRadius = borderRadius || themeBorderRadius; 
+	popoverDiv.style.color = color || themeColor;
+	popoverDiv.style.background = background || themeBackground;
+	popoverDiv.style.boxShadow = boxShadow || themeBoxShadow;
 	popoverDiv.style.position = position;
 	
 	if (type != 'auto') { hideCloseButton = false; }	
