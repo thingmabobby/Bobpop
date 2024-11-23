@@ -29,6 +29,7 @@
 | color | CSS font color (default: none)  |
 | background | CSS background (default: none)  |
 | boxShadow | CSS box-shadow (default: 0 4px 8px rgba(0, 0, 0, 0.5)) |
+| backdrop | CSS background-color used in the ::backdrop pseudoclass for the popover (default: rgb(107 114 128 / .5)) |
 | maxHeight | CSS max-height (default: 85svh) |
 | maxWidth | CSS max-height (default: 90vw) |
 | position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)  |

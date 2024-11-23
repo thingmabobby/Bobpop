@@ -35,6 +35,7 @@
 // color: 				CSS font color (default: none)
 // background: 			CSS background (default: none)
 // boxShadow: 			CSS box-shadow (default: 0 4px 8px rgba(0, 0, 0, 0.5))
+// backdrop:			CSS background-color used in the ::backdrop pseudoclass for the popover (default: rgb(107 114 128 / .5))
 // 
 // position: 			CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)
 // margin: 				CSS margin (default: unset, default if anchor is specified: .5rem 0)
@@ -138,6 +139,7 @@ function bobpop ({
 	color = '',
 	background = '',
 	boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)',
+	backdrop = 'rgb(107 114 128 / .5)',
 	hideCloseButton = false,
 	showOkButton = false,
 	okButtonText = 'Ok',
@@ -460,68 +462,77 @@ function bobpop ({
 		}
 	});
 	
-	// CSS fade and scale in/out transition for the popover
-	if (transition) {
-		const bobpopInjectCSS = () => {
-			const styleId = "bobpopTransitionStyles";
+	// inject the CSS as a stylesheet in the DOM that we can't add inline for bobpop (backdrop pseudoclass and transition stuff)
+	const bobpopInjectCSS = () => {
+		const backdropStyleId = "bobpopBackdropStyle";
+		const backdropCSS = `
+		:where(.bobpopPopover)::backdrop {
+			background-color: ${backdrop};
+		}
+		`;
+			
+		if (!document.getElementById(backdropCSS)) {
+			const styleSheet = document.createElement("style");
+			styleSheet.type = "text/css";
+			styleSheet.id = backdropStyleId;
+			styleSheet.textContent = backdropCSS;
 
-			if (!document.getElementById(styleId)) {
-				const css = `
-				:where(.bobpopPopover) {
-					/* popover transition in/out */
-					&, &::backdrop {
-						transition: 
-							display .5s allow-discrete, 
-							overlay .5s allow-discrete, 
-							transform .5s,
-							opacity .5s;
-						opacity: 0;
-					}
-					  
-					/* open state */
-					&:popover-open {
-						opacity: 1;
-						transform: scale(1);
-						
-						&::backdrop {
-							opacity: 1;
-						}
-					}
-					  
-					/* offstage styles */
-					@starting-style {
-						&:popover-open {
-							transform: scale(0);
-							opacity: 0;
-						}
-						&:popover-open, &:popover-open::backdrop {
-							opacity: 0;
-						}
-					}
+			document.head.appendChild(styleSheet);
+		}
 
-					/* only scale if it's ok with the user */
-					@media (prefers-reduced-motion: no-preference) {
-						transform: scale(.95);
-					}
-
+		const transitionStyleId = "bobpopTransitionStyles";
+		if (transition && !document.getElementById(transitionStyleId)) {				
+			const transitionCSS = `
+			:where(.bobpopPopover) {
+				/* popover transition in/out */
+				&, &::backdrop {
+					transition: 
+						display .5s allow-discrete, 
+						overlay .5s allow-discrete, 
+						transform .5s,
+						opacity .5s;
+					opacity: 0;
+				}
+				  
+				/* open state */
+				&:popover-open {
+					opacity: 1;
+					transform: scale(1);
+					
 					&::backdrop {
-						box-shadow: inset 0 0 0 1000px rgba(0,0,0,.5);
+						opacity: 1;
 					}
 				}
-				`;
+				  
+				/* offstage styles */
+				@starting-style {
+					&:popover-open {
+						transform: scale(0);
+						opacity: 0;
+					}
+					&:popover-open, &:popover-open::backdrop {
+						opacity: 0;
+					}
+				}
 
-				const styleSheet = document.createElement("style");
-				styleSheet.type = "text/css";
-				styleSheet.id = styleId; // Assign a unique ID
-				styleSheet.textContent = css;
-
-				document.head.appendChild(styleSheet);
+				/* only scale if it's ok with the user */
+				@media (prefers-reduced-motion: no-preference) {
+					transform: scale(.95);
+				}
 			}
-		};
+			`;
 
-		// call the function to inject the CSS
-		bobpopInjectCSS();
-	}
+			const styleSheet = document.createElement("style");
+			styleSheet.type = "text/css";
+			styleSheet.id = transitionStyleId;
+			styleSheet.textContent = transitionCSS;
+
+			document.head.appendChild(styleSheet);				
+		}
+	};
+
+	// call the function to inject the CSS
+	bobpopInjectCSS();
 	
 	// show the popover
 	popoverDiv.showPopover();
