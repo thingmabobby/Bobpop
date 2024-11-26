@@ -310,7 +310,7 @@ function bobpop ({
 		popoverDiv.style.positionArea = anchorPositionArea;
 		popoverDiv.style.inset = 'auto';
 		popoverDiv.style.visibility = 'anchors-visible';
-		popoverDiv.style.positionTryFallbacks = 'flip-block';
+		popoverDiv.style.positionTryFallbacks = 'flip-block, flip-inline, flip-block flip-inline';
 		popoverDiv.style.tryOrder = 'most-height';
 		
 		// anchor to an element by ID by adding the style of anchor-name: --name to the specified ID
