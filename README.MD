@@ -1,51 +1,54 @@
 # Bobpop
- Vanilla JavaScript custom alerts using the [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API "Popover API") and [CSS anchors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning "CSS anchors") to show alerts/tooltips in the top layer potentially positioned with CSS anchors.
+ Vanilla JavaScript custom alerts using the [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API "Popover API") and [CSS anchors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning "CSS anchors") to show alerts/dialogs/tooltips in the top layer potentially positioned with CSS anchors.
 
- I originally wrote this to help me create popover API error alerts on top of my existing dialog modals, but I figured it can be used for any small alert or tooltip. This was mostly me just testing the Popover API and CSS anchors. It is pretty limited in what you can do with anchors, but I figured it was good enough as a test.
+ I originally wrote this to help me create popover API error alerts on top of my existing dialog modals, but I figured it can be used for any small alert, dialog, or tooltip. This was mostly me just testing the Popover API and CSS anchors and slowly adding options.
 
 
 **OPTIONS:**
 
 | Option   |   Description|
 | ------------ | ------------ |
-| id  | The DOM ID to specify to be used (default: bobpop)  |
-| type | Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify automatic to make them hit the "X" to dismiss it (escape will not dismiss using manual so avoid manual if accessibility is a concern)  |
+| id  | The DOM ID to specify to be used (default: 'bobpop'). Multiple instances will be assigned a unique ID.  |
+| type | Defaults to 'auto' (lightly dismissed - escape or click outside of it), but you can specify 'manual' (or anything else) to make the user hit the "X" to dismiss it (escape will not dismiss using manual so avoid manual if accessibility is a concern)  |
 | title | The header title of the popover (can be HTML)   |
 | body | The body of the popover (can be HTML) |
 | closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: an SVG red X) |
-| hideCloseButton | True/false - hides the "X" dismissal button only if type is set to auto |
-| showOkButton | True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
-| okButtonText | Text for the Ok button (default: "Ok") |
-| transition | True/false if the default fade/scale transition in and out is to be used (default: true) |
+| hideCloseButton | True/False - hides the "X" dismissal button only if type is set to 'auto' |
+| showOkButton | True/False - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
+| okButtonText | Text for the Ok button (default: 'Ok') |
+| transition | True/False if the default fade/scale transition in and out is to be used (default: true) |
 | bobpopOnOpen | This will run an anonymous function you provide when the popover is opened |
 | bobpopOnClose | This will run an anonymous function you provide when the popover is closed |
 
 |  Style Option | Description  |
 | ------------ | ------------ |
-| border  | CSS border (default: none)  |
-| borderRadius | CSS border-radius (default: 15px)  |
-| padding  | CSS padding (default: 1rem)  |
-| fontFamily | CSS font-family (default: none) |
-| color | CSS font color (default: none)  |
-| background | CSS background (default: none)  |
-| boxShadow | CSS box-shadow (default: 0 4px 8px rgba(0, 0, 0, 0.5)) |
-| backdrop | CSS background-color used in the ::backdrop pseudoclass for the popover (default: rgb(107 114 128 / .5)) |
-| maxHeight | CSS max-height (default: 85svh) |
-| maxWidth | CSS max-height (default: 90vw) |
-| position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)  |
-| margin | CSS margin (default: unset, default if anchor is specified: .5rem 0)  |
-| anchor | CSS anchor name to attach it to (e.g.: --anchorname)  |
+| border  | CSS border (default: unset)  |
+| borderRadius | CSS border-radius (default: '15px')  |
+| padding  | CSS padding (default: '1rem')  |
+| fontFamily | CSS font-family (default: unset) |
+| color | CSS font color (default: unset)  |
+| background | CSS background (default: unset)  |
+| boxShadow | CSS box-shadow (default: '0 4px 8px rgba(0, 0, 0, 0.5)') |
+| backdrop | CSS background-color used in the ::backdrop pseudoclass for the popover (default: 'rgb(107 114 128 / .5)') |
+| backdropBlur | CSS backdrop-filter: blur (default: false) |
+| backdropBlurPx | CSS blur amount in pixels for backdropBlur (default: '4') |
+| maxHeight | CSS max-height (default: '85svh') |
+| maxWidth | CSS max-height (default: '90vw') |
+| scrollbarWidth | CSS scrollbar-width (default: 'thin') |
+| position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: 'fixed')  |
+| margin | CSS margin (default: unset, default if anchor is specified: '.5rem 0')  |
+| anchor | CSS anchor-name to attach it to (e.g.: '--anchorname')  |
 | anchorToId | Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it  |
-| anchorPositionArea |  CSS position-area (default: bottom - can be many things like bottom right, top left, end end, start end, etc.) |
-| tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: top center).  The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically (top left, top center, top right, left middle, right middle, bottom left, bottom center, bottom right). Please note: the arrow will not point correctly if anchor positioning is being used and it flips to stay on screen (e.g. set to top with arrow pointing down towards the anchor element, but user scrolls down and it shifts to bottom of anchor element, but arrow still points down instead of up) |
-| tooltipArrowColor | The color of the tooltip arrow. (default: black) |
-| titlePadding | CSS padding for the title div (default: 0px 0px) |
-| titleMargin | CSS margin for the title div (default: .5rem 0). Note if a tooltip arrow is specified it will apply a title margin of 1rem 0. |
-| titleBorderSize | CSS size for the title div border-bottom (default: none) |
-| titleBorderType | CSS border type for the title div border-bottom (default: none) |
-| titleBorderColor | CSS border color for the title div border-bottom (default: none) |
-| titleTextAlign | CSS text-align for the title text (default: left) |
-| bodyTextAlign | CSS text-align for the body text (default: inherit) |
+| anchorPositionArea |  CSS position-area (default: 'bottom' - can be many things like 'bottom right', 'top left', 'end end', 'start end', etc.) |
+| tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: 'top center').  The corners ('left top', 'left bottom', 'right top', 'right bottom') point outwards diagonally and the others point outwards horizontally or vertically ('top left', 'top center', 'top right', 'left middle', 'right middle', 'bottom left', 'bottom center', 'bottom right'). Please note: the arrow will not point correctly if anchor positioning is being used and it flips to stay on screen (e.g. set to top with arrow pointing down towards the anchor element, but user scrolls down and it shifts to bottom of anchor element, but arrow still points down instead of up) |
+| tooltipArrowColor | The color of the tooltip arrow. (default: 'black') |
+| titlePadding | CSS padding for the title div (default: '0px 0px') |
+| titleMargin | CSS margin for the title div (default: '.5rem 0'). Note if a tooltip arrow is specified it will apply a title margin of '1rem 0'. |
+| titleBorderSize | CSS size for the title div border-bottom (default: unset) |
+| titleBorderType | CSS border type for the title div border-bottom (default: unset) |
+| titleBorderColor | CSS border color for the title div border-bottom (default: unset) |
+| titleTextAlign | CSS text-align for the title text (default: 'left') |
+| bodyTextAlign | CSS text-align for the body text (default: unset) |
 | theme | See "Themes" section |
 
 | Custom Function | Description |

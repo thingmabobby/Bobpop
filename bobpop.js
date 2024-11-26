@@ -7,48 +7,50 @@
 //
 // OPTIONS:
 // 
-// id: 					The DOM ID to specify to be used (default: bobpop)
-// type: 				Defaults to auto (lightly dismissed - escape or click outside of it), but you can specify "manual" to make them hit the "X" to dismiss it (escape won't dismiss using manual so avoid manual if accessibility is a concern)
+// id: 					The DOM ID to specify to be used (default: 'bobpop'). Multiple instances will be assigned a unique ID.
+// type: 				Defaults to 'auto' (lightly dismissed - escape or click outside of it), but you can specify 'manual' (or anything else) to make the user hit the "X" to dismiss it (escape will not dismiss using manual so avoid manual if accessibility is a concern)
 //
 // title:				The header title of the popover (can be HTML) 
-// titlePadding:		CSS padding for the title div (default: 0px 0px)
-// titleMargin:			CSS margin for the title div (default: .5rem 0)
-// titleBorderSize:		CSS size for the title div border-bottom (default: none)
-// titleBorderType:		CSS border type for the title div border-bottom (default: none)
-// titleBorderColor:	CSS border color for the title div border-bottom (default: none)
-// titleTextAlign:		CSS text-align for the title text (default: left)
+// titlePadding:		CSS padding for the title div (default: '0px 0px')
+// titleMargin:			CSS margin for the title div (default: '.5rem 0')
+// titleBorderSize:		CSS size for the title div border-bottom (default: unset)
+// titleBorderType:		CSS border type for the title div border-bottom (default: unset)
+// titleBorderColor:	CSS border color for the title div border-bottom (default: unset)
+// titleTextAlign:		CSS text-align for the title text (default: 'left')
 
 // body: 				The body of the popover (can be HTML)
-// bodyTextAlign:		CSS text-align for the body text (default: inherit)
+// bodyTextAlign:		CSS text-align for the body text (default: unset)
 // closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: an SVG red X)
-// hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to auto
+// hideCloseButton:		True/false - hides the "X" dismissal button only if type is set to 'auto'
 // showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false)
-// okButtonText:		Text for the Ok button (default: "Ok")
+// okButtonText:		Text for the Ok button (default: 'Ok')
 //
-// maxHeight			CSS max-height (default: 85svh)
-// maxWidth				CSS max-width (default: 90vw)
-// scrollbarWidth		CSS Scrollbar Width (default: thin)
-// border:				CSS border (default: none)
-// borderRadius:		CSS border-radius (default: 15px)
-// padding:				CSS padding (default: 1rem)
-// fontFamily			CSS font-family (default: none)
-// color: 				CSS font color (default: none)
-// background: 			CSS background (default: none)
-// boxShadow: 			CSS box-shadow (default: 0 4px 8px rgba(0, 0, 0, 0.5))
-// backdrop:			CSS background-color used in the ::backdrop pseudoclass for the popover (default: rgb(107 114 128 / .5))
+// maxHeight			CSS max-height (default: '85svh')
+// maxWidth				CSS max-width (default: '90vw')
+// scrollbarWidth		CSS Scrollbar Width (default: 'thin')
+// border:				CSS border (default: unset)
+// borderRadius:		CSS border-radius (default: '15px')
+// padding:				CSS padding (default: '1rem')
+// fontFamily			CSS font-family (default: unset)
+// color: 				CSS font color (default: unset)
+// background: 			CSS background (default: unset)
+// boxShadow: 			CSS box-shadow (default: '0 4px 8px rgba(0, 0, 0, 0.5)')
+// backdrop:			CSS background-color used in the ::backdrop pseudoclass for the popover (default: 'rgb(107 114 128 / .5)')
+// backdropBlur:		CSS backdrop-filter: blur (default: false)
+// backdropBlurPx:		CSS blur amount in pixels for backdropBlur (default: '4')
 // 
-// position: 			CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: fixed)
-// margin: 				CSS margin (default: unset, default if anchor is specified: .5rem 0)
+// position: 			CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: 'fixed')
+// margin: 				CSS margin (default: unset, default if anchor is specified: '.5rem 0')
 // 
-// anchor: 				CSS anchor name to attach it to (e.g.: --anchorname)
+// anchor: 				CSS anchor name to attach it to (e.g.: '--anchorname')
 // anchorToId:			Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it
-// anchorPositionArea:	CSS position-area (default: bottom - can be many things like bottom right, top left, end end, start end, etc.)
+// anchorPositionArea:	CSS position-area (default: 'bottom' - can be many things like 'bottom right', 'top left', 'end end', 'start end', etc.)
 //
-// tooltipArrow:		Displays an arrow pointing outwards in the specified placement. (default: top center)
-//							- The corners (left top, left bottom, right top, right bottom) point outwards diagonally and the others point outwards horizontally or vertically (top left, top center, top right, left middle, right middle, bottom left, bottom center, bottom right).
+// tooltipArrow:		Displays an arrow pointing outwards in the specified placement. (default: 'top center')
+//							- The corners ('left top', 'left bottom', 'right top', 'right bottom') point outwards diagonally and the others point outwards horizontally or vertically ('top left', 'top center', 'top right', 'left middle', 'right middle', 'bottom left', 'bottom center', 'bottom right').
 //						Please note: the arrow will not point correctly if anchor positioning is being used and it flips to stay on screen 
 //							(e.g. set to top with arrow pointing down towards the anchor element, but user scrolls down and it shifts to bottom of anchor element, but arrow still points down instead of up)
-// tooltipArrowColor:	The color of the tooltip arrow. (default: black)
+// tooltipArrowColor:	The color of the tooltip arrow. (default: 'black')
 //						 ________________________________________________________________________________________
 //						|																				 	   	 |
 //						|left top - top left				top center						top right - right top|
@@ -115,7 +117,7 @@
 //		You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is added. 
 //		You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
 //
-//		Available themes: dark, light, modern, fancy, pastel, ocean, nature, warm, sleek, retro, elegant, bootstrap, material, tailwind
+//		Available themes: 'dark', 'light', 'modern', 'fancy', 'pastel', 'ocean', 'nature', 'warm', 'sleek', 'retro', 'elegant', 'bootstrap', 'material', 'tailwind'
 */
 function bobpop ({
 	id = 'bobpop',
@@ -140,6 +142,8 @@ function bobpop ({
 	background = '',
 	boxShadow = '0 4px 8px rgba(0, 0, 0, 0.5)',
 	backdrop = 'rgb(107 114 128 / .5)',
+	backdropBlur = false,
+	backdropBlurPx = '4',
 	hideCloseButton = false,
 	showOkButton = false,
 	okButtonText = 'Ok',
@@ -463,11 +467,13 @@ function bobpop ({
 	});
 	
 	// inject the CSS as a stylesheet in the DOM that we can't add inline for bobpop (backdrop pseudoclass and transition stuff)
+	if (backdropBlur) { backdropBlur = `backdrop-filter: blur(${backdropBlurPx}px);`; }
 	const bobpopInjectCSS = () => {
 		const backdropStyleId = "bobpopBackdropStyle";
 		const backdropCSS = `
 		:where(.bobpopPopover)::backdrop {
 			background-color: ${backdrop};
+			${backdropBlur}
 		}
 		`;
 			
