@@ -114,7 +114,7 @@
 //
 // Themes:
 // 		usage -  theme: 'fancy'
-//		You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is added. 
+//		You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is specified. 
 //		You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
 //
 //		Available themes: 'dark', 'light', 'modern', 'fancy', 'pastel', 'ocean', 'nature', 'warm', 'sleek', 'retro', 'elegant', 'bootstrap', 'material', 'tailwind'
