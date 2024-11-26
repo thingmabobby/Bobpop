@@ -33,7 +33,7 @@
 | backdropBlur | CSS backdrop-filter: blur (default: false) |
 | backdropBlurPx | CSS blur amount in pixels for backdropBlur (default: '4') |
 | maxHeight | CSS max-height (default: '85svh') |
-| maxWidth | CSS max-height (default: '90vw') |
+| maxWidth | CSS max-width (default: '90vw') |
 | scrollbarWidth | CSS scrollbar-width (default: 'thin') |
 | position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: 'fixed')  |
 | margin | CSS margin (default: unset, default if anchor is specified: '.5rem 0')  |
