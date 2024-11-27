@@ -62,6 +62,8 @@ Usage - theme: 'fancy'
 |---------|-------------|
 | dark    | A dark theme with a black background and white text, designed for low-light environments. |
 | light   | A light theme with a light grey background and dark text, ideal for bright environments. |
+| warning | A soft amber theme to server as a potential issue or non-critical alert. |
+| error   | A bold and urgent theme with a red background. |
 | modern  | A modern theme with a blue gradient background, featuring a sleek, minimalistic design. |
 | fancy   | A vibrant gradient theme with purple and blue tones, offering a stylish and bold look. |
 | pastel  | A soft pastel gradient theme with light pink and orange hues, perfect for a gentle aesthetic. |
@@ -153,4 +155,29 @@ function addUser() {
 function addUserSubmit() {
 	console.log('do something!');
 }
+```
+
+- An example of a manually-dismissed bobpop with a button in the body that opens a lightly-dismissed "warning" bobpop popover. It's anchored to an element on the page and logs to console when it opens and closes. [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/KwPKJKd "codepen")
+```
+document.getElementById('myElement').addEventListener("click", (e) => {
+	let html = `
+		<div style="padding: 50px;"><button id="testbutton" onClick="bobpop({title: 'Warning!', body: 'This is a popover inside another popover!', theme: 'warning', anchor: '--testbutton', anchorToId: 'testbutton'})">open warning</button></div>
+	`;
+	
+	bobpop({
+		type: 'manual',
+		title: 'Test',
+		body: html,
+		anchor: '--myanchor',
+		anchorToId: 'myElement',
+		anchorPositionArea: 'top',
+		backdropBlur: true,
+		bobpopOnOpen: () => {
+			console.log('opened');
+		},
+		bobpopOnClose: () => {
+			console.log('closed');
+		}
+	})
+})
 ```
