@@ -99,15 +99,13 @@ bobpop({
 
 - Anchored to a specific DOM element. If you scroll it should try to shift and stay in the viewport. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/WNqrYQx "codepen")
 ````
-bobpop({
-	bobpop({
-		title: 'Hello',
-		body: 'Here is some body text for you!',
-		anchor: '--myanchor',
-		anchorToId: 'myElement',
-		anchorPositionArea: 'top',
-		anchorMargin: '2rem'
-  })
+bobpop({	
+	title: 'Hello',
+	body: 'Here is some body text for you!',
+	anchor: '--myanchor',
+	anchorToId: 'myElement',
+	anchorPositionArea: 'top',
+	anchorMargin: '2rem'
 })
 ````
 
