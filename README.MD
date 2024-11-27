@@ -18,8 +18,10 @@
 | okButtonText | Text for the Ok button (default: 'Ok') |
 | allowEscapeKey | true/false - Allows the escape key to dismiss a manual type popover (default: true) |
 | transition | true/false if the default fade/scale transition in and out is to be used (default: true) |
-| bobpopOnOpen | This will run an anonymous function you provide when the popover is opened |
-| bobpopOnClose | This will run an anonymous function you provide when the popover is closed |
+| bobpopOnBeforeOpen | This will run an anonymous function you provide before the popover is opened. The beforetoggle event object (e) is passed into your function. |
+| bobpopOnOpen | This will run an anonymous function you provide when the popover is opened. The beforetoggle event object (e) is passed into your function. |
+| bobpopOnBeforeClose | This will run an anonymous function you provide before the popover is closed. The beforetoggle event object (e) is passed into your function. Please note according to MDN you cannot preventDefault() a closing popover.  |
+| bobpopOnClose | This will run an anonymous function you provide when the popover is closed. The beforetoggle event object (e) is passed into your function. |
 
 |  Style Option | Description  |
 | ------------ | ------------ |
@@ -172,11 +174,17 @@ document.getElementById('myElement').addEventListener("click", (e) => {
 		anchorToId: 'myElement',
 		anchorPositionArea: 'top',
 		backdropBlur: true,
-		bobpopOnOpen: () => {
+		bobpopOnBeforeOpen: (e) => {
+			console.log('this should happen before opening');
+		},
+		bobpopOnOpen: (e) => {
 			console.log('opened');
 		},
-		bobpopOnClose: () => {
+		bobpopOnClose: (e) => {
 			console.log('closed');
+		},
+		bobpopOnBeforeClose: (e) => {
+			console.log('this should happen before closing');
 		}
 	})
 })

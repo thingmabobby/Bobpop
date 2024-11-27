@@ -94,6 +94,9 @@
 //									}
 //								})
 //
+// bobpopOnBeforeOpen:	Will run an anonymous function you provide before bobpop is toggled to show.
+// bobpopOnBeforeClose: Will run an anonymous function you provide before bobpop is toggled to hide.
+//
 // There's also a custom function that you can use:
 // bobpopCloseAll():  Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM)
 //
@@ -108,8 +111,10 @@ function bobpop (options = {}) {
 	const defaults = {
 		theme: null,
 		transition: true,
-		bobpopOnOpen: () => {},
-		bobpopOnClose: () => {},
+		bobpopOnBeforeOpen: null,
+		bobpopOnOpen: null,
+		bobpopOnBeforeClose: null,
+		bobpopOnClose: null,
 		id: 'bobpop',
 		type: 'auto',
 		maxHeight: '85svh',
@@ -323,22 +328,35 @@ function bobpop (options = {}) {
 	popoverDiv.setAttribute('aria-describedby', finalOptions.id + '_body');
 	
 	
+	// add the event listener to trigger a before open or before closed function
+	popoverDiv.addEventListener('beforetoggle', (e) => {
+		if (e.newState == 'open') {
+			if (typeof finalOptions.bobpopOnBeforeOpen === 'function') {
+				finalOptions.bobpopOnBeforeOpen(e);
+			}			
+		} else {
+			if (typeof finalOptions.bobpopOnBeforeClose === 'function') {
+				finalOptions.bobpopOnBeforeClose(e);
+			}
+		}
+	});
+	
 	// add the event listener to remove it from the DOM and cleanup when it's been dismissed
 	popoverDiv.addEventListener('toggle', (e) => {
 		if (e.newState == 'open') {
 			if (typeof finalOptions.bobpopOnOpen === 'function') {
-				finalOptions.bobpopOnOpen();
+				finalOptions.bobpopOnOpen(e);
 			}
 		}
 		
 		if (e.newState === 'closed') {
 			// execute anything from the bobpopOnClose trigger
 			if (typeof finalOptions.bobpopOnClose === 'function') {
-				finalOptions.bobpopOnClose();
+				finalOptions.bobpopOnClose(e);
 			}
-			
-			popoverDiv.removeEventListener('toggle', e);
-			
+		
+			popoverDiv.removeEventListener('beforetoggle', e);		
+			popoverDiv.removeEventListener('toggle', e);			
 			
 			// if there are no transitions applied to the popover then just remove it from the DOM
 			if (hasTransitionProperty(popoverDiv) === false) {
