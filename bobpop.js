@@ -99,7 +99,7 @@
 //
 // Themes:
 // 		usage -  theme: 'fancy'
-//		You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is specified. 
+//		You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is specified (light theme defaults otherwise). 
 //		You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
 //
 //		Available themes: 'dark', 'light', 'modern', 'fancy', 'pastel', 'ocean', 'nature', 'warm', 'sleek', 'retro', 'elegant', 'bootstrap', 'material', 'tailwind'
@@ -152,7 +152,7 @@ function bobpop (options = {}) {
 	
 	const themes = {
 		dark: { fontFamily: 'sans-serif', background : '#333', color : '#fff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', padding: '10px', border: 'none', },
-		light: { fontFamily: 'sans-serif', background: '#eaeaea', color: '#333', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px', border: '1px solid #ccc', },
+		light: { fontFamily: 'sans-serif', background: '#fff', color: '#333', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px', border: '1px solid #ccc', },
 		modern: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #1e3c72, #2a5298)', color: '#fff', boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)', padding: '12px 24px', borderRadius: '6px', border: 'none', },
 		fancy: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #6a11cb, #2575fc)', color: '#fff', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', padding: '15px', border: 'none', },
 		pastel: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #f6d365, #fda085)', color: '#333', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', padding: '12px 24px', borderRadius: '8px', border: '1px solid #f7a2b4', },
@@ -167,9 +167,10 @@ function bobpop (options = {}) {
 		tailwind: { fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif', background: '#f9fafb', color: '#1f2937', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.1)', padding: '1rem', border: '1px solid #d1d5db', borderRadius: '0.5rem', }
 	}	
 	
-	let theme = themes[options.theme] || {};
+	// assign the theme and fallback to light mode if none was selected
+	let theme = themes[options.theme] || themes['light'];
 	
-	// if the user's preference is dark mode then use the dark theme (assuming no theme choice has been made)
+	// if the user's preference is dark mode then use the dark theme instead (assuming no theme choice has been made)
 	if (!options.theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 		theme = themes.dark;
     }
