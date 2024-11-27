@@ -9,25 +9,26 @@
 | Option   |   Description|
 | ------------ | ------------ |
 | id  | The DOM ID to specify to be used (default: 'bobpop'). Multiple instances will be assigned a unique ID.  |
-| type | Defaults to 'auto' (lightly dismissed - escape or click outside of it), but you can specify 'manual' (or anything else) to make the user hit the "X" to dismiss it (escape will not dismiss using manual so avoid manual if accessibility is a concern)  |
+| type | Defaults to 'auto' (lightly dismissed - escape or click outside of it), but you can specify 'manual' (or anything else) to make the user hit the "X" to dismiss it (escape will dismiss it regardless of type unless allowEscapeKey is false)  |
 | title | The header title of the popover (can be HTML)   |
 | body | The body of the popover (can be HTML) |
 | closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: an SVG red X) |
-| hideCloseButton | True/False - hides the "X" dismissal button only if type is set to 'auto' |
-| showOkButton | True/False - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
+| showCloseButton | true/false - if type is 'auto' showCloseButton is false, otherwise true |
+| showOkButton | true/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
 | okButtonText | Text for the Ok button (default: 'Ok') |
-| transition | True/False if the default fade/scale transition in and out is to be used (default: true) |
+| allowEscapeKey | true/false - Allows the escape key to dismiss a manual type popover (default: true) |
+| transition | true/false if the default fade/scale transition in and out is to be used (default: true) |
 | bobpopOnOpen | This will run an anonymous function you provide when the popover is opened |
 | bobpopOnClose | This will run an anonymous function you provide when the popover is closed |
 
 |  Style Option | Description  |
 | ------------ | ------------ |
-| border  | CSS border (default: unset)  |
+| border  | CSS border (default: 'none')  |
 | borderRadius | CSS border-radius (default: '15px')  |
 | padding  | CSS padding (default: '1rem')  |
-| fontFamily | CSS font-family (default: unset) |
-| color | CSS font color (default: unset)  |
-| background | CSS background (default: unset)  |
+| fontFamily | CSS font-family (default: 'inherit') |
+| color | CSS font color (default: 'inherit')  |
+| background | CSS background (default: 'inherit')  |
 | boxShadow | CSS box-shadow (default: '0 4px 8px rgba(0, 0, 0, 0.5)') |
 | backdrop | CSS background-color used in the ::backdrop pseudoclass for the popover (default: 'rgb(107 114 128 / .5)') |
 | backdropBlur | CSS backdrop-filter: blur (default: false) |
@@ -36,19 +37,14 @@
 | maxWidth | CSS max-width (default: '90vw') |
 | scrollbarWidth | CSS scrollbar-width (default: 'thin') |
 | position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: 'fixed')  |
-| margin | CSS margin (default: unset, default if anchor is specified: '.5rem 0')  |
 | anchor | CSS anchor-name to attach it to (e.g.: '--anchorname')  |
 | anchorToId | Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it  |
 | anchorPositionArea |  CSS position-area (default: 'bottom' - can be many things like 'bottom right', 'top left', 'end end', 'start end', etc.) |
-| tooltipArrow  | Displays an arrow pointing outwards in the specified placement. (default: 'top center').  The corners ('left top', 'left bottom', 'right top', 'right bottom') point outwards diagonally and the others point outwards horizontally or vertically ('top left', 'top center', 'top right', 'left middle', 'right middle', 'bottom left', 'bottom center', 'bottom right'). Please note: the arrow will not point correctly if anchor positioning is being used and it flips to stay on screen (e.g. set to top with arrow pointing down towards the anchor element, but user scrolls down and it shifts to bottom of anchor element, but arrow still points down instead of up) |
-| tooltipArrowColor | The color of the tooltip arrow. (default: 'black') |
+| anchorMargin | CSS margin (default: '0', default if anchor is specified: '.5rem 0')  |
 | titlePadding | CSS padding for the title div (default: '0px 0px') |
 | titleMargin | CSS margin for the title div (default: '.5rem 0'). Note if a tooltip arrow is specified it will apply a title margin of '1rem 0'. |
-| titleBorderSize | CSS size for the title div border-bottom (default: unset) |
-| titleBorderType | CSS border type for the title div border-bottom (default: unset) |
-| titleBorderColor | CSS border color for the title div border-bottom (default: unset) |
-| titleTextAlign | CSS text-align for the title text (default: 'left') |
-| bodyTextAlign | CSS text-align for the body text (default: unset) |
+| titleTextAlign | CSS text-align for the title text (default: 'center') |
+| bodyTextAlign | CSS text-align for the body text (default: 'inherit') |
 | theme | See "Themes" section |
 
 | Custom Function | Description |
@@ -101,34 +97,33 @@ bobpop({
 ````
 
 
-- Anchored to a specific DOM element with a "tooltip arrow" pointing to it. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/WNqrYQx "codepen")
+- Anchored to a specific DOM element. If you scroll it should try to shift and stay in the viewport. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/WNqrYQx "codepen")
 ````
 bobpop({
-	title: 'Error!',
-	body: 'Something went wrong.',
-	anchor: '--myanchor',
-	anchorToId: 'myElement',
-	anchorPositionArea: 'end',
-	tooltipArrow: 'left top'
+	bobpop({
+		title: 'Hello',
+		body: 'Here is some body text for you!',
+		anchor: '--myanchor',
+		anchorToId: 'myElement',
+		anchorPositionArea: 'top',
+		anchorMargin: '2rem'
+  })
 })
 ````
 
 
-- A light-dismissed alert hiding the "X" close button, a custom background, anchored to a specific DOM element, custom HTML in the title, and a red tooltip arrow. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
+- A light-dismissed alert hiding the "X" close button, a fancy theme, anchored to a specific DOM element, custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
 ````
 bobpop({
-	body: 'You could use this as a tooltip',
-	background: '#f0f0f0',
-	boxShadow: 'none',
+	body: 'Check out this <b>sweet</b> popover!',
+	theme: 'fancy',
 	hideCloseButton: true,
 	anchor: '--myanchor',
 	anchorToId: 'myElement',
-	tooltipArrow: 'top center',
-	tooltipArrowColor: 'red'
 })
 ````
 
-- Here's an example using bobpopOnOpen to open a manually-dismissed bobpop with a form in the body that also has a submit button to check validity and then run a function. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/wvVKQyQ "codepen")
+- Here's an example using bobpopOnOpen to open a manually-dismissed bobpop using a tailwind theme with a form in the body that also has a submit button to check validity and then run a function. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/wvVKQyQ "codepen")
 ```
 function addUser() {
 	const bodyhtml = `
@@ -142,7 +137,7 @@ function addUser() {
 	bobpop({
 		title: 'Add User',
 		type: 'manual',
-		background: '#ddf0ff',
+		theme: 'tailwind',
 		body: bodyhtml,
 		bobpopOnOpen: () => {
 			document.getElementById('addUser').addEventListener('submit', (event) => {
