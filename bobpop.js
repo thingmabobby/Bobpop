@@ -17,8 +17,8 @@
 
 // body: 				The body of the popover (can be HTML)
 // bodyTextAlign:		CSS text-align for the body text (default: inherit)
-// closeButtonText:		Text of the "X" dismissal button (can be HTML) (default: an SVG red X)
 // showCloseButton:		True/false - if type is 'auto' showCloseButton is false, otherwise true
+// closeButtonColor:	CSS color for the stroke of the X svg close button.
 // showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false)
 // okButtonText:		Text for the Ok button (default: 'Ok')
 // allowEscapeKey:		True/false - Allows the escape key to dismiss a manual type popover (default: true)
@@ -46,7 +46,7 @@
 //
 // transition:			True/false if the default fade/scale transition in and out is to be used (default: true)
 //
-// bobpopOnOpen:		Will run an anonymous function you provide when the popover is opened.
+// onOpen:		Will run an anonymous function you provide when the popover is opened.
 //							Example to open a bobpop and have a form in the body 
 //							with a submit button to check validity and run a function you want:
 //
@@ -64,7 +64,7 @@
 //										type: 'manual',
 //										background: '#ddf0ff',
 //										body: bodyhtml,
-//										bobpopOnOpen: () => {
+//										onOpen: () => {
 //											document.getElementById('addUser').addEventListener('submit', (event) => {
 //												event.preventDefault();				
 //												const isValid = document.getElementById('addUser').checkValidity();
@@ -82,20 +82,20 @@
 //								}
 //
 //
-// bobpopOnClose:		Will run an anonymous function you provide when the popover is closed.
+// onClose:		Will run an anonymous function you provide when the popover is closed.
 //							Example:
 //								bobpop({
 //									id: 'bobpop_warning',
 //									title: 'Error',
 //									body: 'That username is already taken! Please enter another.',
-//									bobpopOnClose: () => {
+//									onClose: () => {
 //										document.getElementById('newusername').value = '';
 //										document.getElementById('newusername').focus();
 //									}
 //								})
 //
-// bobpopOnBeforeOpen:	Will run an anonymous function you provide before bobpop is toggled to show.
-// bobpopOnBeforeClose: Will run an anonymous function you provide before bobpop is toggled to hide.
+// onBeforeOpen:	Will run an anonymous function you provide before bobpop is toggled to show.
+// onBeforeClose: Will run an anonymous function you provide before bobpop is toggled to hide.
 //
 // There's also a custom function that you can use:
 // bobpopCloseAll():  Every bobpop popover gets assigned a class "bobpopPopover" so this will loop through all of them and .hidePopover() on them (which triggers the toggle event listener for each and removes them from the DOM)
@@ -111,10 +111,10 @@ function bobpop (options = {}) {
 	const defaults = {
 		theme: null,
 		transition: true,
-		bobpopOnBeforeOpen: null,
-		bobpopOnOpen: null,
-		bobpopOnBeforeClose: null,
-		bobpopOnClose: null,
+		onBeforeOpen: null,
+		onOpen: null,
+		onBeforeClose: null,
+		onClose: null,
 		id: 'bobpop',
 		type: 'auto',
 		maxHeight: '85svh',
@@ -132,15 +132,10 @@ function bobpop (options = {}) {
 		backdropBlurPx: '4',
 		position: 'fixed',
 		showCloseButton: false,
+		closeButtonColor: '#FF0000',
 		showOkButton: false,
 		okButtonText: 'Ok',
 		allowEscapeKey: true,
-		closeButtonText: `
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" focusable="false" style="stroke: red; stroke-width: 3; stroke-linecap: round; display: inline-block; vertical-align: middle;">
-				<line x1="4" y1="4" x2="20" y2="20"></line>
-				<line x1="20" y1="4" x2="4" y2="20"></line>
-			</svg>
-		`,
 		title: '',
 		titleTextAlign: 'center',
 		titlePadding: '0px',
@@ -159,7 +154,7 @@ function bobpop (options = {}) {
 		dark: { fontFamily: 'sans-serif', background : '#333', color : '#fff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', padding: '10px', border: 'none' },
 		light: { fontFamily: 'sans-serif', background: '#fff', color: '#333', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px', border: '1px solid #ccc' },
 		warning: { fontFamily: 'sans-serif', background: '#fff3cd', color: '#333', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', padding: '12px 24px', border: '1px solid #e0a800', borderRadius: '6px' },
-		error: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #f85032, #e73827)', color: '#fff', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', padding: '12px 24px', border: '1px solid #c53030', borderRadius: '6px' },
+		error: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #f85032, #e73827)', color: '#fff', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', padding: '12px 24px', border: '1px solid #c53030', borderRadius: '6px', closeButtonColor: '#fff' },
 		modern: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #1e3c72, #2a5298)', color: '#fff', boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)', padding: '12px 24px', borderRadius: '6px', border: 'none' },
 		fancy: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #6a11cb, #2575fc)', color: '#fff', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', padding: '15px', border: 'none' },
 		pastel: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #f6d365, #fda085)', color: '#333', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', padding: '12px 24px', borderRadius: '8px', border: '1px solid #f7a2b4' },
@@ -238,8 +233,15 @@ function bobpop (options = {}) {
 		xbutton.style.border = 'none';
 		xbutton.style.background = 'transparent';
 		xbutton.style.cursor = 'pointer';
-		xbutton.style.color = 'red';
-		xbutton.innerHTML = finalOptions.closeButtonText;
+		
+		const closeButtonText = `
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" focusable="false" style="stroke: ${finalOptions.closeButtonColor}; stroke-width: 3; stroke-linecap: round; display: inline-block; vertical-align: middle;">
+				<line x1="4" y1="4" x2="20" y2="20"></line>
+				<line x1="20" y1="4" x2="4" y2="20"></line>
+			</svg>
+		`;
+		xbutton.innerHTML = closeButtonText;
+		
 		xbutton.id = finalOptions.id + '_xbutton';
 		xbutton.setAttribute('tabindex', '0');
 		xbutton.setAttribute('aria-label','Close Popover');
@@ -331,12 +333,12 @@ function bobpop (options = {}) {
 	// add the event listener to trigger a before open or before closed function
 	popoverDiv.addEventListener('beforetoggle', (e) => {
 		if (e.newState == 'open') {
-			if (typeof finalOptions.bobpopOnBeforeOpen === 'function') {
-				finalOptions.bobpopOnBeforeOpen(e);
+			if (typeof finalOptions.onBeforeOpen === 'function') {
+				finalOptions.onBeforeOpen(e);
 			}			
 		} else {
-			if (typeof finalOptions.bobpopOnBeforeClose === 'function') {
-				finalOptions.bobpopOnBeforeClose(e);
+			if (typeof finalOptions.onBeforeClose === 'function') {
+				finalOptions.onBeforeClose(e);
 			}
 		}
 	});
@@ -344,15 +346,15 @@ function bobpop (options = {}) {
 	// add the event listener to remove it from the DOM and cleanup when it's been dismissed
 	popoverDiv.addEventListener('toggle', (e) => {
 		if (e.newState == 'open') {
-			if (typeof finalOptions.bobpopOnOpen === 'function') {
-				finalOptions.bobpopOnOpen(e);
+			if (typeof finalOptions.onOpen === 'function') {
+				finalOptions.onOpen(e);
 			}
 		}
 		
 		if (e.newState === 'closed') {
-			// execute anything from the bobpopOnClose trigger
-			if (typeof finalOptions.bobpopOnClose === 'function') {
-				finalOptions.bobpopOnClose(e);
+			// execute anything from the onClose trigger
+			if (typeof finalOptions.onClose === 'function') {
+				finalOptions.onClose(e);
 			}
 		
 			popoverDiv.removeEventListener('beforetoggle', e);		

@@ -12,16 +12,16 @@
 | type | Defaults to 'auto' (lightly dismissed - escape or click outside of it), but you can specify 'manual' (or anything else) to make the user hit the "X" to dismiss it (escape will dismiss it regardless of type unless allowEscapeKey is false)  |
 | title | The header title of the popover (can be HTML)   |
 | body | The body of the popover (can be HTML) |
-| closeButtonText  | Text of the "X" dismissal button (can be HTML) (default: an SVG red X) |
 | showCloseButton | true/false - if type is 'auto' showCloseButton is false, otherwise true |
+| closeButtonColor  | CSS color for the stroke of the X svg close button.) |
 | showOkButton | true/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
 | okButtonText | Text for the Ok button (default: 'Ok') |
 | allowEscapeKey | true/false - Allows the escape key to dismiss a manual type popover (default: true) |
 | transition | true/false if the default fade/scale transition in and out is to be used (default: true) |
-| bobpopOnBeforeOpen | This will run an anonymous function you provide before the popover is opened. The beforetoggle event object (e) is passed into your function. |
-| bobpopOnOpen | This will run an anonymous function you provide when the popover is opened. The beforetoggle event object (e) is passed into your function. |
-| bobpopOnBeforeClose | This will run an anonymous function you provide before the popover is closed. The beforetoggle event object (e) is passed into your function. Please note according to MDN you cannot preventDefault() a closing popover.  |
-| bobpopOnClose | This will run an anonymous function you provide when the popover is closed. The beforetoggle event object (e) is passed into your function. |
+| onBeforeOpen | This will run an anonymous function you provide before the popover is opened. The beforetoggle event object (e) is passed into your function. |
+| onOpen | This will run an anonymous function you provide when the popover is opened. The beforetoggle event object (e) is passed into your function. |
+| onBeforeClose | This will run an anonymous function you provide before the popover is closed. The beforetoggle event object (e) is passed into your function. Please note according to MDN you cannot preventDefault() a closing popover.  |
+| onClose | This will run an anonymous function you provide when the popover is closed. The beforetoggle event object (e) is passed into your function. |
 
 |  Style Option | Description  |
 | ------------ | ------------ |
@@ -85,8 +85,8 @@ Usage - theme: 'fancy'
 - A light-dismissed, very simple, and generic error messsage. See example: [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/BagjGzo "codepen")
 ````
 bobpop({
-	title: 'Error!',
-	body: 'Something went wrong.'
+	title: 'bobpop',
+	body: 'A light-dismissed, very simple, and generic messsage.'
 })
 ````
 
@@ -95,6 +95,7 @@ bobpop({
 ````
 bobpop({
 	type: 'manual',
+	theme: 'error',
 	title: 'Error!',
 	body: 'Something went wrong.'
 })
@@ -114,18 +115,17 @@ bobpop({
 ````
 
 
-- A light-dismissed alert hiding the "X" close button, a fancy theme, anchored to a specific DOM element, custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
+- A light-dismissed alert, a fancy theme, anchored to a specific DOM element, custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
 ````
 bobpop({
 	body: 'Check out this <b>sweet</b> popover!',
 	theme: 'fancy',
-	hideCloseButton: true,
 	anchor: '--myanchor',
 	anchorToId: 'myElement',
 })
 ````
 
-- Here's an example using bobpopOnOpen to open a manually-dismissed bobpop using a tailwind theme with a form in the body that also has a submit button to check validity and then run a function. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/wvVKQyQ "codepen")
+- Here's an example using onOpen to open a manually-dismissed bobpop using a tailwind theme with a form in the body that also has a submit button to check validity and then run a function. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/wvVKQyQ "codepen")
 ```
 function addUser() {
 	const bodyhtml = `
@@ -141,7 +141,7 @@ function addUser() {
 		type: 'manual',
 		theme: 'tailwind',
 		body: bodyhtml,
-		bobpopOnOpen: () => {
+		onOpen: () => {
 			document.getElementById('addUser').addEventListener('submit', (event) => {
 				event.preventDefault();				
 				const isValid = document.getElementById('addUser').checkValidity();
@@ -168,22 +168,23 @@ document.getElementById('myElement').addEventListener("click", (e) => {
 	
 	bobpop({
 		type: 'manual',
+		theme: 'sleek',
 		title: 'Test',
 		body: html,
 		anchor: '--myanchor',
 		anchorToId: 'myElement',
 		anchorPositionArea: 'top',
 		backdropBlur: true,
-		bobpopOnBeforeOpen: (e) => {
+		onBeforeOpen: (e) => {
 			console.log('this should happen before opening');
 		},
-		bobpopOnOpen: (e) => {
+		onOpen: (e) => {
 			console.log('opened');
 		},
-		bobpopOnClose: (e) => {
+		onClose: (e) => {
 			console.log('closed');
 		},
-		bobpopOnBeforeClose: (e) => {
+		onBeforeClose: (e) => {
 			console.log('this should happen before closing');
 		}
 	})
