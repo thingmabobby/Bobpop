@@ -238,6 +238,7 @@ function bobpop (options = {}) {
 		xbutton.id = finalOptions.id + '_xbutton';
 		xbutton.setAttribute('tabindex', '0');
 		xbutton.setAttribute('aria-label','Close Popover');
+		xbutton.setAttribute('aria-controls', finalOptions.id);
 		xbutton.setAttribute('popovertarget', finalOptions.id);
 		xbutton.setAttribute('popovertargetaction', 'hide');
 		xbutton.setAttribute('onmouseover','this.style.transform = \'scale(1.2)\'');
@@ -272,7 +273,17 @@ function bobpop (options = {}) {
 	if (finalOptions.showOkButton) {
 		let okButtonDiv = document.createElement('div');
 		okButtonDiv.setAttribute('id',finalOptions.id + '_okButton');
-		let okButton = '<div style="margin-top: 1rem; text-align: center;"><button popovertarget="' + popoverDiv.id + '">' + finalOptions.okButtonText + '</button></div>';		
+		let okButton = `
+			<div style="margin-top: 1rem; text-align: center;">
+				<button 
+					popovertarget="${finalOptions.id}" 
+					aria-label="${finalOptions.okButtonText}" 
+					aria-controls="${popoverDiv.id}" 
+					aria-expanded="false">
+					${finalOptions.okButtonText}
+				</button>
+			</div>
+		`;
 		okButtonDiv.innerHTML = okButton;
 		popoverDiv.appendChild(okButtonDiv);		
 	}	
