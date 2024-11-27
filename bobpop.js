@@ -13,7 +13,7 @@
 // title:				The header title of the popover (can be HTML) 
 // titlePadding:		CSS padding for the title div (default: '0px 0px')
 // titleMargin:			CSS margin for the title div (default: '.5rem 0')
-// titleTextAlign:		CSS text-align for the title text (default: 'left')
+// titleTextAlign:		CSS text-align for the title text (default: 'center')
 
 // body: 				The body of the popover (can be HTML)
 // bodyTextAlign:		CSS text-align for the body text (default: inherit)
@@ -137,7 +137,7 @@ function bobpop (options = {}) {
 			</svg>
 		`,
 		title: '',
-		titleTextAlign: 'left',
+		titleTextAlign: 'center',
 		titlePadding: '0px',
 		titleMargin: '.5rem 0',
 		body: '',
@@ -233,6 +233,8 @@ function bobpop (options = {}) {
 		xbutton.style.color = 'red';
 		xbutton.innerHTML = finalOptions.closeButtonText;
 		xbutton.id = finalOptions.id + '_xbutton';
+		xbutton.setAttribute('tabindex', '0');
+		xbutton.setAttribute('aria-label','Close Popover');
 		xbutton.setAttribute('popovertarget', finalOptions.id);
 		xbutton.setAttribute('popovertargetaction', 'hide');
 		xbutton.setAttribute('onmouseover','this.style.transform = \'scale(1.2)\'');
