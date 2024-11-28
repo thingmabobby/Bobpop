@@ -411,7 +411,7 @@ function bobpop (options = {}) {
 						height: 0;
 						border-style: solid;
 						border-width: 32px 32px 0 0;
-						border-color: #f0f0f0 transparent transparent transparent;
+						border-color: ${finalOptions.background} transparent transparent transparent;
 						bottom: -20px;
 						left: 20px;
 					}
@@ -422,7 +422,7 @@ function bobpop (options = {}) {
 						height: 0;
 						border-style: solid;
 						border-width: 0 32px 32px 32px;
-						border-color: transparent transparent #f0f0f0 transparent;
+						border-color: transparent transparent ${finalOptions.background} transparent;
 						top: -10%;
 						left: 50%;
 						transform: translateX(-50%);
@@ -434,7 +434,7 @@ function bobpop (options = {}) {
 						height: 0;
 						border-style: solid;
 						border-width: 32px 0 0 32px;
-						border-color: #f0f0f0 transparent transparent transparent;
+						border-color: ${finalOptions.background} transparent transparent transparent;
 						bottom: -20px;
 						right: 20px;
 					}
@@ -445,7 +445,7 @@ function bobpop (options = {}) {
 						height: 0;
 						border-style: solid;
 						border-width: 0 32px 32px 0;
-						border-color: transparent transparent #f0f0f0 transparent;
+						border-color: transparent transparent ${finalOptions.background} transparent;
 						top: -20px;
 						left: 20px;
 					}
@@ -456,7 +456,7 @@ function bobpop (options = {}) {
 						height: 0;
 						border-style: solid;
 						border-width: 32px 32px 0 32px;
-						border-color: #f0f0f0 transparent transparent transparent;
+						border-color: ${finalOptions.background} transparent transparent transparent;
 						bottom: -10%;
 						left: 50%;
 						transform: translateX(-50%);
@@ -468,7 +468,7 @@ function bobpop (options = {}) {
 						height: 0;
 						border-style: solid;
 						border-width: 0 0 32px 32px;
-						border-color: transparent transparent #f0f0f0 transparent;
+						border-color: transparent transparent ${finalOptions.background} transparent;
 						top: -20px;
 						right: 20px;
 					}
