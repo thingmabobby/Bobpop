@@ -33,6 +33,7 @@
 // color: 				CSS font color (default: inherit)
 // background: 			CSS background (default: inherit)
 // boxShadow: 			CSS box-shadow (default: '0 4px 8px rgba(0, 0, 0, 0.5)')
+// chatBubbleTail:		If the chatbubble theme is chosen then adds a "tail" on the topLeft, topRight, topCenter, bottomLeft, bottomCenter, or bottomRight of bobPop. (default: bottomLeft)
 // backdrop:			CSS background-color used in the ::backdrop pseudoclass for the popover (default: 'rgb(107 114 128 / .5)')
 // backdropBlur:		CSS backdrop-filter: blur (default: false)
 // backdropBlurPx:		CSS blur amount in pixels for backdropBlur (default: '4')
@@ -105,7 +106,7 @@
 //		You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is specified (light theme defaults otherwise). 
 //		You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
 //
-//		Available themes: 'dark', 'light', 'warning', 'error', 'modern', 'fancy', 'pastel', 'ocean', 'nature', 'warm', 'sleek', 'retro', 'elegant', 'bootstrap', 'material', 'tailwind'
+//		Available themes: 'dark', 'light', 'warning', 'error', 'chatbubble', 'modern', 'fancy', 'pastel', 'ocean', 'nature', 'warm', 'sleek', 'retro', 'elegant', 'bootstrap', 'material', 'tailwind'
 */
 function bobpop (options = {}) {
 	const defaults = {
@@ -148,6 +149,7 @@ function bobpop (options = {}) {
 		anchorPositionArea: 'bottom',
 		anchorPositionTryFallbacks: 'flip-block, flip-inline, flip-block flip-inline',
 		anchorPositionTryOrder: 'most-height',
+		chatBubbleTail: 'bottomLeft'
 	};	
 	
 	const themes = {
@@ -156,6 +158,7 @@ function bobpop (options = {}) {
 		warning: { fontFamily: 'sans-serif', background: '#fff3cd', color: '#333', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', padding: '12px 24px', border: '1px solid #e0a800', borderRadius: '6px' },
 		error: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #f85032, #e73827)', color: '#fff', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', padding: '12px 24px', border: '1px solid #c53030', borderRadius: '6px', closeButtonColor: '#fff' },
 		modern: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #1e3c72, #2a5298)', color: '#fff', boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)', padding: '12px 24px', borderRadius: '6px', border: 'none' },
+		chatbubble: { fontFamily: 'sans-serif', background: '#f0f0f0', color: '#212529', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', padding: '2rem', borderRadius: '32px' },
 		fancy: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #6a11cb, #2575fc)', color: '#fff', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', padding: '15px', border: 'none' },
 		pastel: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #f6d365, #fda085)', color: '#333', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)', padding: '12px 24px', borderRadius: '8px', border: '1px solid #f7a2b4' },
 		ocean: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #00b4d8, #0077b6)', color: '#fff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)', padding: '12px 20px', borderRadius: '6px', border: 'none' },
@@ -387,11 +390,100 @@ function bobpop (options = {}) {
 			}
 		});
 	}
-	
+		
 	
 	// inject the CSS as a stylesheet in the DOM that we can't add inline for bobpop (backdrop pseudoclass and transition stuff)
 	if (finalOptions.backdropBlur) { finalOptions.backdropBlur = `backdrop-filter: blur(${finalOptions.backdropBlurPx}px);`; }
 	const bobpopInjectCSS = () => {
+		// chat bubble theme tail CSS 
+		if (options.theme == 'chatbubble') {
+			const chatBubbleStyleId = 'bobpopChatBubbleStyles';
+			
+			if (!document.getElementById(chatBubbleStyleId)) {			
+				const chatBubbleCSS = `
+					.bobpop-chat {
+						overflow: visible;
+					}
+					.bobpopPopover[data-tail='bottomLeft']::after {
+						content: '';
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 32px 32px 0 0;
+						border-color: #f0f0f0 transparent transparent transparent;
+						bottom: -20px;
+						left: 20px;
+					}
+					.bobpopPopover[data-tail='topCenter']::after {
+						content: '';
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 0 32px 32px 32px;
+						border-color: transparent transparent #f0f0f0 transparent;
+						top: -10%;
+						left: 50%;
+						transform: translateX(-50%);
+					}
+					.bobpopPopover[data-tail='bottomRight']::after {
+						content: '';
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 32px 0 0 32px;
+						border-color: #f0f0f0 transparent transparent transparent;
+						bottom: -20px;
+						right: 20px;
+					}
+					.bobpopPopover[data-tail='topLeft']::after {
+						content: '';
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 0 32px 32px 0;
+						border-color: transparent transparent #f0f0f0 transparent;
+						top: -20px;
+						left: 20px;
+					}
+					.bobpopPopover[data-tail='bottomCenter']::after {
+						content: '';
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 32px 32px 0 32px;
+						border-color: #f0f0f0 transparent transparent transparent;
+						bottom: -10%;
+						left: 50%;
+						transform: translateX(-50%);
+					}
+					.bobpopPopover[data-tail='topRight']::after {
+						content: '';
+						position: absolute;
+						width: 0;
+						height: 0;
+						border-style: solid;
+						border-width: 0 0 32px 32px;
+						border-color: transparent transparent #f0f0f0 transparent;
+						top: -20px;
+						right: 20px;
+					}
+				`;
+				
+				const chatBubbleStylesheet = document.createElement('style');
+				chatBubbleStylesheet.type = "text/css";
+				chatBubbleStylesheet.id = chatBubbleStyleId;
+				chatBubbleStylesheet.textContent = chatBubbleCSS;				
+				document.head.appendChild(chatBubbleStylesheet);
+			}
+			popoverDiv.classList.add('bobpop-chat');
+			popoverDiv.setAttribute('data-tail', finalOptions.chatBubbleTail);
+		}
+	
 		const backdropStyleId = "bobpopBackdropStyle";
 		const backdropCSS = `
 		:where(.bobpopPopover)::backdrop {

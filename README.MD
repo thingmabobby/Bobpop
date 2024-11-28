@@ -32,6 +32,7 @@
 | color | CSS font color (default: 'inherit')  |
 | background | CSS background (default: 'inherit')  |
 | boxShadow | CSS box-shadow (default: '0 4px 8px rgba(0, 0, 0, 0.5)') |
+| chatBubbleTail | If the chatbubble theme is chosen then adds a "tail" on the topLeft, topCenter, topRight, bottomLeft, bottomCenter, or bottomRight of bobPop. (default: bottomLeft)
 | backdrop | CSS background-color used in the ::backdrop pseudoclass for the popover (default: 'rgb(107 114 128 / .5)') |
 | backdropBlur | CSS backdrop-filter: blur (default: false) |
 | backdropBlurPx | CSS blur amount in pixels for backdropBlur (default: '4') |
@@ -66,6 +67,7 @@ Usage - theme: 'fancy'
 | light   | A light theme with a light grey background and dark text, ideal for bright environments. |
 | warning | A soft amber theme to server as a potential issue or non-critical alert. |
 | error   | A bold and urgent theme with a red background. |
+| chatbubble | A comic-book/cartoon style chat bubble. |
 | modern  | A modern theme with a blue gradient background, featuring a sleek, minimalistic design. |
 | fancy   | A vibrant gradient theme with purple and blue tones, offering a stylish and bold look. |
 | pastel  | A soft pastel gradient theme with light pink and orange hues, perfect for a gentle aesthetic. |
@@ -82,7 +84,7 @@ Usage - theme: 'fancy'
 
 **Examples**
 
-- A light-dismissed, very simple, and generic error messsage. See example: [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/BagjGzo "codepen")
+- A light-dismissed, very simple, and generic error messsage. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/BagjGzo "codepen")
 ````
 bobpop({
 	title: 'bobpop',
@@ -115,11 +117,12 @@ bobpop({
 ````
 
 
-- A light-dismissed alert, a fancy theme, anchored to a specific DOM element, custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
+- A light-dismissed alert, the chatbubble theme with custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
 ````
 bobpop({
 	body: 'Check out this <b>sweet</b> popover!',
-	theme: 'fancy',
+	theme: 'chatbubble',
+	chatBubbleTail: 'topLeft',
 	anchor: '--myanchor',
 	anchorToId: 'myElement',
 })
