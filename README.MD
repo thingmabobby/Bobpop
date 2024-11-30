@@ -17,7 +17,8 @@
 | showOkButton | true/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
 | okButtonText | Text for the Ok button (default: 'Ok') |
 | allowEscapeKey | true/false - Allows the escape key to dismiss a manual type popover (default: true) |
-| transition | true/false if the default fade/scale transition in and out is to be used (default: true) |
+| transition | true/false if the default 'scale' transition is to be used (default: true). Please note this only works with browsers that support allow-discrete. |
+| transitionType | The CSS transition to animate the popover in (default: 'scale') |
 | onBeforeOpen | This will run an anonymous function you provide before the popover is opened. The beforetoggle event object (e) is passed into your function. |
 | onOpen | This will run an anonymous function you provide when the popover is opened. The beforetoggle event object (e) is passed into your function. |
 | onBeforeClose | This will run an anonymous function you provide before the popover is closed. The beforetoggle event object (e) is passed into your function. Please note according to MDN you cannot preventDefault() a closing popover.  |
@@ -40,7 +41,7 @@
 | maxWidth | CSS max-width (default: '90vw') |
 | scrollbarWidth | CSS scrollbar-width (default: 'thin') |
 | position | CSS position - you may want to use absolute if you are using anchoring, but results may vary (default: 'fixed')  |
-| anchor | CSS anchor-name to attach it to (e.g.: '--anchorname')  |
+| anchor | CSS anchor-name to attach it to (e.g.: '--anchorname'). Please note anchor positioning is extremely new and limited browser support is available (mostly newer versions of Chrome & Edge).  |
 | anchorToId | Given a valid DOM element ID it will append the "anchor-name" CSS style with the given anchor option from above (--anchorname) so it will anchor the popover to it  |
 | anchorPositionArea |  CSS position-area (default: 'bottom' - can be many things like 'bottom right', 'top left', 'end end', 'start end', etc.) |
 | anchorMargin | CSS margin (default: '0', default if anchor is specified: '.5rem 0')  |
@@ -80,6 +81,26 @@ Usage - theme: 'fancy'
 | bootstrap | Moderately rounded corners, heavier shadows, classic typography. |
 | material | Slightly sharper look with a focus on prominent shadows and clean spacing. |
 | tailwind | Minimalistic design with soft shadows and neutral tones, ideal for modern aesthetics. |
+
+
+**TRANSITIONS:**
+bobpop uses the scale transition by default, but you can specify any of the transitions below.
+Usage: - transitionType: 'falling'
+
+| Transition        | Description                                        |
+|-------------------|----------------------------------------------------|
+| scale  	        | Fades in/out while scaling from 0 to 1.            |
+| slideTop          | Slides in from the top.                            |
+| slideBottom       | Slides in from the bottom.                         |
+| slideLeft         | Slides in from the left.                           |
+| slideRight        | Slides in from the right.                          |
+| flip              | Flips the element along the Y-axis.                |
+| rotate            | Rotates the element from 0 to -180 degrees.        |
+| fadeSlide         | Combines a slight slide with fading in/out.        |
+| stretchHorizontal | Stretches horizontally from left to right.         |
+| stretchVertical   | Stretches vertically from top to bottom.           |
+| pop               | Scales the element from 1 to 0.5 for a popping effect. |
+| falling           | Moves the element down while rotating slightly.    |
 
 
 **Examples**

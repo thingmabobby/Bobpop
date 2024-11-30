@@ -107,11 +107,18 @@
 //		You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
 //
 //		Available themes: 'dark', 'light', 'warning', 'error', 'chatbubble', 'modern', 'fancy', 'pastel', 'ocean', 'nature', 'warm', 'sleek', 'retro', 'elegant', 'bootstrap', 'material', 'tailwind'
+//
+// Transitions:
+//		bobpop uses the scale transition by default, but you can specify any of the transitions below.
+//		Usage: - transitionType: 'falling'
+//
+//		Available transitions: 'scale', 'slideTop', 'slideBottom', 'slideLeft', 'slideRight', 'flip', 'rotate', 'fadeSlide', 'stretchHorizontal', 'stretchVertical', 'pop', 'falling'
 */
 function bobpop (options = {}) {
 	const defaults = {
 		theme: null,
 		transition: true,
+		transitionType: 'scale',
 		onBeforeOpen: null,
 		onOpen: null,
 		onBeforeClose: null,
@@ -142,7 +149,7 @@ function bobpop (options = {}) {
 		titlePadding: '0px',
 		titleMargin: '.5rem 0',
 		body: '',
-		bodyTextAlign: 'inherit',
+		bodyTextAlign: 'center',
 		anchor: null,
 		anchorToId: null,
 		anchorMargin: '.5rem 0',
@@ -501,54 +508,188 @@ function bobpop (options = {}) {
 			document.head.appendChild(styleSheet);
 		}
 
-		const transitionStyleId = "bobpopTransitionStyles";
-		if (finalOptions.transition && !document.getElementById(transitionStyleId)) {				
-			const transitionCSS = `
-			:where(.bobpopPopover) {
-				/* popover transition in/out */
-				&, &::backdrop {
-					transition: 
-						display .5s allow-discrete, 
-						overlay .5s allow-discrete, 
-						transform .5s,
-						opacity .5s;
-					opacity: 0;
-				}
-				  
-				/* open state */
-				&:popover-open {
-					opacity: 1;
-					transform: scale(1);
-					
-					&::backdrop {
-						opacity: 1;
-					}
-				}
-				  
-				/* offstage styles */
-				@starting-style {
-					&:popover-open {
-						transform: scale(0);
+		const transitionStyleId = "bobpopTransitionStyles_" + (finalOptions.transitionType || 'scale');
+		if (finalOptions.transition) {
+			// common transition CSS shared across all types
+			const commonTransitionCSS = `
+				:where(.bobpopPopover) {
+					&, &::backdrop {
+						transition: 
+							display .6s allow-discrete,
+							overlay .6s allow-discrete,
+							transform .6s ease,
+							opacity .6s;
 						opacity: 0;
 					}
-					&:popover-open, &:popover-open::backdrop {
-						opacity: 0;
-					}
-				}
 
-				/* only scale if it's ok with the user */
-				@media (prefers-reduced-motion: no-preference) {
-					transform: scale(.95);
+					/* Open state */
+					&:popover-open {
+						opacity: 1;
+						transform: {transformOpen};
+						
+						&::backdrop {
+							opacity: 1;
+						}
+					}
+
+					/* Offstage styles */
+					@starting-style {
+						&:popover-open {
+							transform: {transformClosed};
+							opacity: 0;
+						}
+					}
 				}
-			}
 			`;
 
+			// transition type-specific settings
+			const transitions = {
+				scale: {
+					transformOpen: "scale(1)",
+					transformClosed: "scale(0)",
+					extraCSS: `
+						@media (prefers-reduced-motion: no-preference) {
+							transform: scale(.95);
+						}
+					`
+				},
+				slideTop: {
+					transformOpen: "translateY(0)",
+					transformClosed: "translateY(-100%)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: translateY(0);
+							transition: opacity .3s ease;
+					}
+					`
+				},
+				slideBottom: {
+					transformOpen: "translateY(0)",
+					transformClosed: "translateY(100%)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: translateY(0);
+							transition: opacity .3s ease;
+					}
+					`
+				},
+				slideLeft: {
+					transformOpen: "translateX(0)",
+					transformClosed: "translateX(-100%)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: translateY(0);
+							transition: opacity .3s ease;
+					}
+					`
+				},
+				slideRight: {
+					transformOpen: "translateX(0)",
+					transformClosed: "translateX(100%)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: translateY(0);
+							transition: opacity .3s ease;
+					}
+					`
+				},
+				flip: {
+					transformOpen: "rotateY(0)",
+					transformClosed: "rotateY(90deg)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: none;
+							transition: opacity .3s ease;
+						}
+					`
+				},
+				rotate: {
+					transformOpen: "rotate(0deg)",
+					transformClosed: "rotate(-180deg)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: none;
+							transition: opacity .3s ease;
+						}
+					`
+				},
+				fadeSlide: {
+					transformOpen: "translateY(0)",
+					transformClosed: "translateY(-10%)",
+					extraCSS: `
+						& {
+							transition: opacity .6s ease, transform .6s ease;
+						}
+						@media (prefers-reduced-motion: reduce) {
+							transform: none;
+							transition: opacity .3s ease;
+						}
+					`
+				},
+				stretchHorizontal: {
+					transformOpen: "scaleX(1)",
+					transformClosed: "scaleX(0)",
+					extraCSS: `
+						transform-origin: left;
+						@media (prefers-reduced-motion: reduce) {
+							transform: none;
+							transition: opacity .3s ease;
+						}
+					`
+				},
+				stretchVertical: {
+					transformOpen: "scaleY(1)",
+					transformClosed: "scaleY(0)",
+					extraCSS: `
+						transform-origin: top; /* Stretch from top */
+						@media (prefers-reduced-motion: reduce) {
+							transform: none;
+							transition: opacity .3s ease;
+						}
+					`
+				},
+				pop: {
+					transformOpen: "scale(1)",
+					transformClosed: "scale(0.5)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: none;
+							transition: opacity .3s ease;
+						}
+					`
+				},
+				falling: {
+					transformOpen: "translateY(0) rotate(0)",
+					transformClosed: "translateY(-100%) rotate(-15deg)",
+					extraCSS: `
+						@media (prefers-reduced-motion: reduce) {
+							transform: none;
+							transition: opacity .3s ease;
+						}
+					`
+				}
+			};
+
+			// get the transition settings for the selected type
+			const selectedTransition = transitions[finalOptions.transitionType || 'scale'];
+
+			// replace placeholders in the common transition CSS
+			let transitionCSS = commonTransitionCSS
+				.replace("{transformOpen}", selectedTransition.transformOpen)
+				.replace("{transformClosed}", selectedTransition.transformClosed);
+
+			// add any extra CSS specific to the transition type (prefers-reduce-motion stuff)
+			if (selectedTransition.extraCSS) {
+				transitionCSS += selectedTransition.extraCSS;
+			}
+
+			// create and append the stylesheet
 			const transitionStyleSheet = document.createElement("style");
 			transitionStyleSheet.type = "text/css";
 			transitionStyleSheet.id = transitionStyleId;
 			transitionStyleSheet.textContent = transitionCSS;
-
-			document.head.appendChild(transitionStyleSheet);				
+			if (document.getElementById(transitionStyleId)) { document.getElementById(transitionStyleId).remove(); }
+			document.head.appendChild(transitionStyleSheet);
 		}
 	};
 
