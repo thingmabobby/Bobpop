@@ -13,7 +13,7 @@
 | title | The header title of the popover (can be HTML)   |
 | body | The body of the popover (can be HTML) |
 | showCloseButton | true/false - if type is 'auto' showCloseButton is false, otherwise true. If (e) is passed to onClose or onBeforeClose it will include an e.cancelled = true. |
-| closeButtonColor  | CSS color for the stroke of the X svg close button.) |
+| closeButtonColor  | CSS color for the stroke of the X svg close button. |
 | showOkButton | true/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false). If (e) is passed to onClose or onBeforeClose it will include an e.confirmed = true. |
 | okButtonText | Text for the Ok button (default: 'Ok') |
 | showCancelButton | true/false - shows a "Cancel" button appended to the bottom of the body to dismiss the popover (default: false). If (e) is passed to onClose or onBeforeClose it will include an e.cancelled = true. |
@@ -35,7 +35,7 @@
 | color | CSS font color (default: 'inherit')  |
 | background | CSS background (default: 'inherit')  |
 | boxShadow | CSS box-shadow (default: '0 4px 8px rgba(0, 0, 0, 0.5)') |
-| chatBubbleTail | If the chatbubble theme is chosen then adds a "tail" on the topLeft, topCenter, topRight, bottomLeft, bottomCenter, or bottomRight of bobPop. (default: bottomLeft)
+| chatBubbleTail | If the chatbubble theme is chosen then this adds a "tail" on the topLeft, topCenter, topRight, bottomLeft, bottomCenter, or bottomRight of bobPop. (default: bottomLeft)
 | backdrop | CSS background-color used in the ::backdrop pseudoclass for the popover (default: 'rgb(107 114 128 / .5)') |
 | backdropBlur | CSS backdrop-filter: blur (default: false) |
 | backdropBlurPx | CSS blur amount in pixels for backdropBlur (default: '4') |
@@ -48,7 +48,7 @@
 | anchorPositionArea |  CSS position-area (default: 'bottom' - can be many things like 'bottom right', 'top left', 'end end', 'start end', etc.) |
 | anchorMargin | CSS margin (default: '0', default if anchor is specified: '.5rem 0')  |
 | titlePadding | CSS padding for the title div (default: '0px 0px') |
-| titleMargin | CSS margin for the title div (default: '.5rem 0'). Note if a tooltip arrow is specified it will apply a title margin of '1rem 0'. |
+| titleMargin | CSS margin for the title div (default: '.5rem 0'). |
 | titleTextAlign | CSS text-align for the title text (default: 'center') |
 | bodyTextAlign | CSS text-align for the body text (default: 'inherit') |
 | theme | See "Themes" section |
@@ -113,7 +113,7 @@ Usage: - transitionType: 'falling'
 
 
 
-**Examples**
+**EXAMPLES**
 
 - A light-dismissed, very simple, and generic error messsage. 
 
