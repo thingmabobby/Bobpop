@@ -19,8 +19,10 @@
 // bodyTextAlign:		CSS text-align for the body text (default: inherit)
 // showCloseButton:		True/false - if type is 'auto' showCloseButton is false, otherwise true
 // closeButtonColor:	CSS color for the stroke of the X svg close button.
-// showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false)
+// showOkButton:		True/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover and return a "confirmed" event. (default: false)
 // okButtonText:		Text for the Ok button (default: 'Ok')
+// showCancelButton:	True/false - shows a "Cancel" button appended to the bottom of the body to dismiss the popover and return a "cancelled" event. (default: false)
+// cancelButtonText:	Text for the Cancel button (default: 'Cancel')
 // allowEscapeKey:		True/false - Allows the escape key to dismiss a manual type popover (default: true)
 //
 // maxHeight			CSS max-height (default: '85svh')
@@ -664,130 +666,18 @@ function bobpop (options = {}) {
 
 			// transition type-specific settings
 			const transitions = {
-				scale: {
-					transformOpen: 'scale(1)',
-					transformClosed: 'scale(0)',
-					extraCSS: `
-						@media (prefers-reduced-motion: no-preference) {
-							transform: scale(.95);
-						}
-					`
-				},
-				slideTop: {
-					transformOpen: 'translateY(0)',
-					transformClosed: 'translateY(-100%)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: translateY(0);
-							transition: opacity .3s ease;
-					}
-					`
-				},
-				slideBottom: {
-					transformOpen: 'translateY(0)',
-					transformClosed: 'translateY(100%)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: translateY(0);
-							transition: opacity .3s ease;
-					}
-					`
-				},
-				slideLeft: {
-					transformOpen: 'translateX(0)',
-					transformClosed: 'translateX(-100%)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: translateY(0);
-							transition: opacity .3s ease;
-					}
-					`
-				},
-				slideRight: {
-					transformOpen: 'translateX(0)',
-					transformClosed: 'translateX(100%)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: translateY(0);
-							transition: opacity .3s ease;
-					}
-					`
-				},
-				flip: {
-					transformOpen: 'rotateY(0)',
-					transformClosed: 'rotateY(90deg)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: none;
-							transition: opacity .3s ease;
-						}
-					`
-				},
-				rotate: {
-					transformOpen: 'rotate(0deg)',
-					transformClosed: 'rotate(-180deg)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: none;
-							transition: opacity .3s ease;
-						}
-					`
-				},
-				fadeSlide: {
-					transformOpen: 'translateY(0)',
-					transformClosed: 'translateY(-10%)',
-					extraCSS: `
-						& {
-							transition: opacity .6s ease, transform .6s ease;
-						}
-						@media (prefers-reduced-motion: reduce) {
-							transform: none;
-							transition: opacity .3s ease;
-						}
-					`
-				},
-				stretchHorizontal: {
-					transformOpen: 'scaleX(1)',
-					transformClosed: 'scaleX(0)',
-					extraCSS: `
-						transform-origin: left;
-						@media (prefers-reduced-motion: reduce) {
-							transform: none;
-							transition: opacity .3s ease;
-						}
-					`
-				},
-				stretchVertical: {
-					transformOpen: 'scaleY(1)',
-					transformClosed: 'scaleY(0)',
-					extraCSS: `
-						transform-origin: top; /* Stretch from top */
-						@media (prefers-reduced-motion: reduce) {
-							transform: none;
-							transition: opacity .3s ease;
-						}
-					`
-				},
-				pop: {
-					transformOpen: 'scale(1)',
-					transformClosed: 'scale(0.5)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: none;
-							transition: opacity .3s ease;
-						}
-					`
-				},
-				falling: {
-					transformOpen: 'translateY(0) rotate(0)',
-					transformClosed: 'translateY(-100%) rotate(-15deg)',
-					extraCSS: `
-						@media (prefers-reduced-motion: reduce) {
-							transform: none;
-							transition: opacity .3s ease;
-						}
-					`
-				}
+				scale: { transformOpen: 'scale(1)',	transformClosed: 'scale(0)', extraCSS: `@media (prefers-reduced-motion: no-preference) { transform: scale(.95);	}` },
+				slideTop: { transformOpen: 'translateY(0)', transformClosed: 'translateY(-100%)', extraCSS: `@media (prefers-reduced-motion: reduce) { transform: translateY(0); transition: opacity .3s ease; }` },
+				slideBottom: { transformOpen: 'translateY(0)', transformClosed: 'translateY(100%)',	extraCSS: `@media (prefers-reduced-motion: reduce) { transform: translateY(0); transition: opacity .3s ease; }` },
+				slideLeft: { transformOpen: 'translateX(0)', transformClosed: 'translateX(-100%)', extraCSS: `@media (prefers-reduced-motion: reduce) { transform: translateY(0); transition: opacity .3s ease; }` },
+				slideRight: { transformOpen: 'translateX(0)', transformClosed: 'translateX(100%)', extraCSS: `@media (prefers-reduced-motion: reduce) {	transform: translateY(0); transition: opacity .3s ease; }` },
+				flip: { transformOpen: 'rotateY(0)', transformClosed: 'rotateY(90deg)', extraCSS: `@media (prefers-reduced-motion: reduce) { transform: none; transition: opacity .3s ease;	}` },
+				rotate: { transformOpen: 'rotate(0deg)', transformClosed: 'rotate(-180deg)', extraCSS: `@media (prefers-reduced-motion: reduce) { transform: none; transition: opacity .3s ease; }`	},
+				fadeSlide: { transformOpen: 'translateY(0)', transformClosed: 'translateY(-10%)', extraCSS: `& { transition: opacity .6s ease, transform .6s ease; } @media (prefers-reduced-motion: reduce) { transform: none;	transition: opacity .3s ease; }` },
+				stretchHorizontal: { transformOpen: 'scaleX(1)', transformClosed: 'scaleX(0)', extraCSS: `transform-origin: left; @media (prefers-reduced-motion: reduce) { transform: none; transition: opacity .3s ease; }` },
+				stretchVertical: { transformOpen: 'scaleY(1)', transformClosed: 'scaleY(0)', extraCSS: `transform-origin: top; @media (prefers-reduced-motion: reduce) { transform: none; transition: opacity .3s ease; }` },
+				pop: { transformOpen: 'scale(1)', transformClosed: 'scale(0.5)', extraCSS: `@media (prefers-reduced-motion: reduce) { transform: none; transition: opacity .3s ease; }` },
+				falling: { transformOpen: 'translateY(0) rotate(0)', transformClosed: 'translateY(-100%) rotate(-15deg)', extraCSS: `@media (prefers-reduced-motion: reduce) { transform: none; transition: opacity .3s ease; }` }
 			};
 
 			// get the transition settings for the selected type
