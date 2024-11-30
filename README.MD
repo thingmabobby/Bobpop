@@ -185,21 +185,19 @@ function addUserSubmit() {
 }
 ```
 
-- An example of a manually-dismissed bobpop with a button in the body that opens a lightly-dismissed "warning" bobpop popover. It's anchored to an element on the page and logs to console when it opens and closes. [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/KwPKJKd "codepen")
+- An example of a manually-dismissed bobpop with a slideLeft transition and a button in the body that opens a lightly-dismissed "warning" bobpop popover (done in-line) with a fadeSlide transition. It's anchored to an element on the page and logs to console when it opens and closes. [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/KwPKJKd "codepen")
 ```
 document.getElementById('myElement').addEventListener("click", (e) => {
 	let html = `
-		<div style="padding: 50px;"><button id="testbutton" onClick="bobpop({title: 'Warning!', body: 'This is a popover inside another popover!', theme: 'warning', anchor: '--testbutton', anchorToId: 'testbutton'})">open warning</button></div>
+		<div style="padding: 50px;"><button id="testbutton" onClick="bobpop({title: 'Warning!', body: 'This is a popover inside another popover!', transitionType: 'fadeSlide', theme: 'warning', anchor: '--testbutton', anchorToId: 'testbutton'})">open warning</button></div>
 	`;
 	
 	bobpop({
 		type: 'manual',
 		theme: 'sleek',
 		title: 'Test',
+		transitionType: 'slideLeft',
 		body: html,
-		anchor: '--myanchor',
-		anchorToId: 'myElement',
-		anchorPositionArea: 'top',
 		backdropBlur: true,
 		onBeforeOpen: (e) => {
 			console.log('this should happen before opening');
