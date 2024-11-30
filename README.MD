@@ -24,6 +24,7 @@
 | onBeforeClose | This will run an anonymous function you provide before the popover is closed. The beforetoggle event object (e) is passed into your function. Please note according to MDN you cannot preventDefault() a closing popover.  |
 | onClose | This will run an anonymous function you provide when the popover is closed. The beforetoggle event object (e) is passed into your function. |
 
+
 |  Style Option | Description  |
 | ------------ | ------------ |
 | border  | CSS border (default: 'none')  |
@@ -57,9 +58,11 @@
 
 
 
+
 **THEMES:**
 
 You can style bobpop with a theme by using the theme option when calling it. Please note that it if detects a user's preference is dark mode it will automatically use the dark theme if no theme is specified (light theme defaults otherwise). You can overwrite theme CSS properties such as font-family, color, background, border, border-radius, and padding.
+
 Usage - theme: 'fancy'
 
 | Theme   | Description |
@@ -68,7 +71,7 @@ Usage - theme: 'fancy'
 | light   | A light theme with a light grey background and dark text, ideal for bright environments. |
 | warning | A soft amber theme to server as a potential issue or non-critical alert. |
 | error   | A bold and urgent theme with a red background. |
-| chatbubble | A comic-book/cartoon style chat bubble. |
+| chatbubble | A comic-book/cartoon style chat bubble. You can specify chatBubbleTail for the "tail" placement in options. |
 | modern  | A modern theme with a blue gradient background, featuring a sleek, minimalistic design. |
 | fancy   | A vibrant gradient theme with purple and blue tones, offering a stylish and bold look. |
 | pastel  | A soft pastel gradient theme with light pink and orange hues, perfect for a gentle aesthetic. |
@@ -83,9 +86,12 @@ Usage - theme: 'fancy'
 | tailwind | Minimalistic design with soft shadows and neutral tones, ideal for modern aesthetics. |
 
 
+
+
 **TRANSITIONS:**
 
 bobpop uses the scale transition by default, but you can specify any of the transitions below.
+
 Usage: - transitionType: 'falling'
 
 | Transition        | Description                                        |
@@ -104,9 +110,13 @@ Usage: - transitionType: 'falling'
 | falling           | Moves the element down while rotating slightly.    |
 
 
+
+
 **Examples**
 
-- A light-dismissed, very simple, and generic error messsage. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/BagjGzo "codepen")
+- A light-dismissed, very simple, and generic error messsage. 
+
+See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/BagjGzo "codepen")
 ````
 bobpop({
 	title: 'bobpop',
@@ -115,7 +125,9 @@ bobpop({
 ````
 
 
-- A hard-dismissed, very simple, and generic error messsage. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/mdZVQVN "codepen")
+- A hard-dismissed, very simple, and generic error messsage. 
+
+See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/mdZVQVN "codepen")
 ````
 bobpop({
 	type: 'manual',
@@ -126,7 +138,9 @@ bobpop({
 ````
 
 
-- Anchored to a specific DOM element. If you scroll it should try to shift and stay in the viewport. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/WNqrYQx "codepen")
+- Anchored to a specific DOM element. If you scroll it should try to shift and stay in the viewport. 
+
+See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/WNqrYQx "codepen")
 ````
 bobpop({	
 	title: 'Hello',
@@ -139,7 +153,9 @@ bobpop({
 ````
 
 
-- A light-dismissed alert, the chatbubble theme, a falling transition, with custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
+- A light-dismissed alert, the chatbubble theme, a falling transition, with custom HTML in the title. 
+
+See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
 ````
 bobpop({
 	body: 'Check out this <b>sweet</b> popover!',
@@ -151,7 +167,9 @@ bobpop({
 })
 ````
 
-- Here's an example using onOpen to open a manually-dismissed bobpop using a tailwind theme with a form in the body that also has a submit button to check validity and then run a function. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/wvVKQyQ "codepen")
+- Here's an example using onOpen to open a manually-dismissed bobpop using a tailwind theme with a form in the body that also has a submit button to check validity and then run a function. 
+
+See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/wvVKQyQ "codepen")
 ```
 function addUser() {
 	const bodyhtml = `
@@ -185,7 +203,9 @@ function addUserSubmit() {
 }
 ```
 
-- An example of a manually-dismissed bobpop with a slideLeft transition and a button in the body that opens a lightly-dismissed "warning" bobpop popover (done in-line) with a fadeSlide transition. It's anchored to an element on the page and logs to console when it opens and closes. [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/KwPKJKd "codepen")
+- An example of a manually-dismissed bobpop with a slideLeft transition and a button in the body that opens a lightly-dismissed "warning" bobpop popover (done in-line) with a fadeSlide transition. It's anchored to an element on the page and logs to console when it opens and closes. 
+
+See example: [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/KwPKJKd "codepen")
 ```
 document.getElementById('myElement').addEventListener("click", (e) => {
 	let html = `
