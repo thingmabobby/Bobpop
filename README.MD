@@ -183,23 +183,27 @@ function addUser() {
 	bobpop({
 		title: 'Add User',
 		type: 'manual',
-		theme: 'tailwind',
+    theme: 'tailwind',
 		body: bodyhtml,
-		onOpen: () => {
+		onOpen: (e) => {
 			document.getElementById('addUser').addEventListener('submit', (event) => {
 				event.preventDefault();				
 				const isValid = document.getElementById('addUser').checkValidity();
 				
 				if (isValid) {
-					addUserSubmit();
+					// notice how e is passed in onOpen - this is the event listener for the popover toggle so e.target.id is the element id of this bobpop instance
+					addUserSubmit(e.target.id); 
 				}
 			});
 		}
 	})
 }
 
-function addUserSubmit() {
+function addUserSubmit(bobpopID) {
 	console.log('do something!');
+	
+	// hide the popover (which removes it from the DOM after the animation finishes) based on the ID
+	document.getElementById(bobpopID).hidePopover();
 }
 ```
 
