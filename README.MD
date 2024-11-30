@@ -12,17 +12,18 @@
 | type | Defaults to 'auto' (lightly dismissed - escape or click outside of it), but you can specify 'manual' (or anything else) to make the user hit the "X" to dismiss it (escape will dismiss it regardless of type unless allowEscapeKey is false)  |
 | title | The header title of the popover (can be HTML)   |
 | body | The body of the popover (can be HTML) |
-| showCloseButton | true/false - if type is 'auto' showCloseButton is false, otherwise true |
+| showCloseButton | true/false - if type is 'auto' showCloseButton is false, otherwise true. If (e) is passed to onClose or onBeforeClose it will include an e.cancelled = true. |
 | closeButtonColor  | CSS color for the stroke of the X svg close button.) |
-| showOkButton | true/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false) |
+| showOkButton | true/false - shows an "Ok" button appended to the bottom of the body to dismiss the popover (default: false). If (e) is passed to onClose or onBeforeClose it will include an e.confirmed = true. |
 | okButtonText | Text for the Ok button (default: 'Ok') |
+| showCancelButton | true/false - shows a "Cancel" button appended to the bottom of the body to dismiss the popover (default: false). If (e) is passed to onClose or onBeforeClose it will include an e.cancelled = true. |
 | allowEscapeKey | true/false - Allows the escape key to dismiss a manual type popover (default: true) |
 | transition | true/false if the default 'scale' transition is to be used (default: true). Please note this only works with browsers that support allow-discrete. |
 | transitionType | The CSS transition to animate the popover in (default: 'scale') |
-| onBeforeOpen | This will run an anonymous function you provide before the popover is opened. The beforetoggle event object (e) is passed into your function. |
-| onOpen | This will run an anonymous function you provide when the popover is opened. The beforetoggle event object (e) is passed into your function. |
-| onBeforeClose | This will run an anonymous function you provide before the popover is closed. The beforetoggle event object (e) is passed into your function. Please note according to MDN you cannot preventDefault() a closing popover.  |
-| onClose | This will run an anonymous function you provide when the popover is closed. The beforetoggle event object (e) is passed into your function. |
+| onBeforeOpen | This will run a callback function you provide before the popover is opened. The beforetoggle event object (e) is passed into your function. |
+| onOpen | This will run a callback function you provide when the popover is opened. The beforetoggle event object (e) is passed into your function. |
+| onBeforeClose | This will run a callback function you provide before the popover is closed. The beforetoggle event object (e) is passed into your function with an added e.cancelled = true or e.confirmed = true if an ok or cancel button were clicked. Please note according to MDN you cannot preventDefault() a closing popover.  |
+| onClose | This will run a callback function you provide when the popover is closed. The beforetoggle event object (e) is passed into your function with an added e.cancelled = true or e.confirmed = true if an ok or cancel button were clicked. |
 
 
 |  Style Option | Description  |
@@ -207,7 +208,7 @@ function addUserSubmit(bobpopID) {
 }
 ```
 
-- An example of a manually-dismissed bobpop with a slideLeft transition and a button in the body that opens a lightly-dismissed "warning" bobpop popover (done in-line) with a fadeSlide transition. It's anchored to an element on the page and logs to console when it opens and closes. 
+- An example of a manually-dismissed bobpop with a slideLeft transition and a button in the body that opens a lightly-dismissed "warning" bobpop popover (done in-line) with a fadeSlide transition. It's anchored to an element on the page and logs to console when it opens and closes. It also logs to console based on the ok/cancel (the X button is a cancel too) buttons being clicked to tell you if it was confirmed/cancelled. This is an example of how you could turn bobpop into a dialog -- especially using the manual type so it's not lightly dismissed.
 
 See example: [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/KwPKJKd "codepen")
 ```
@@ -223,6 +224,9 @@ document.getElementById('myElement').addEventListener("click", (e) => {
 		transitionType: 'slideLeft',
 		body: html,
 		backdropBlur: true,
+		showOkButton: true,
+		showCancelButton: true,
+		cancelButtonText: 'nope!',
 		onBeforeOpen: (e) => {
 			console.log('this should happen before opening');
 		},
@@ -231,9 +235,21 @@ document.getElementById('myElement').addEventListener("click", (e) => {
 		},
 		onClose: (e) => {
 			console.log('closed');
+			if (e.confirmed) {
+				console.log('confirmed onClose');
+			}
+			if (e.cancelled) {
+				console.log('cancelled onClose');
+			}
 		},
 		onBeforeClose: (e) => {
 			console.log('this should happen before closing');
+			if (e.confirmed) {
+				console.log('confirmed onBeforeClose');
+			}
+			if (e.cancelled) {
+				console.log('cancelled onBeforeClose');
+			}
 		}
 	})
 })

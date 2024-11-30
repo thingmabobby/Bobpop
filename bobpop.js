@@ -143,6 +143,8 @@ function bobpop (options = {}) {
 		closeButtonColor: '#FF0000',
 		showOkButton: false,
 		okButtonText: 'Ok',
+		showCancelButton: false,
+		cancelButtonText: 'Cancel',
 		allowEscapeKey: true,
 		title: '',
 		titleTextAlign: 'center',
@@ -163,7 +165,7 @@ function bobpop (options = {}) {
 		dark: { fontFamily: 'sans-serif', background : '#333', color : '#fff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', padding: '10px', border: 'none' },
 		light: { fontFamily: 'sans-serif', background: '#fff', color: '#333', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', padding: '10px', border: '1px solid #ccc' },
 		warning: { fontFamily: 'sans-serif', background: '#fff3cd', color: '#333', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', padding: '12px 24px', border: '1px solid #e0a800', borderRadius: '6px' },
-		error: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #f85032, #e73827)', color: '#fff', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', padding: '12px 24px', border: '1px solid #c53030', borderRadius: '6px', closeButtonColor: '#fff' },
+		error: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, rgb(200, 60, 40), rgb(180, 45, 30))', color: '#fff', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', padding: '12px 24px', border: '1px solid #c53030', borderRadius: '6px', closeButtonColor: '#fff' },
 		modern: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #1e3c72, #2a5298)', color: '#fff', boxShadow: '0 6px 12px rgba(0, 0, 0, 0.1)', padding: '12px 24px', borderRadius: '6px', border: 'none' },
 		chatbubble: { fontFamily: 'sans-serif', background: '#f0f0f0', color: '#212529', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', padding: '2rem', borderRadius: '32px' },
 		fancy: { fontFamily: 'sans-serif', background: 'linear-gradient(135deg, #6a11cb, #2575fc)', color: '#fff', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', padding: '15px', border: 'none' },
@@ -228,6 +230,7 @@ function bobpop (options = {}) {
 		
 			
 	// create the X button div & X button
+	let cancelled = false;
 	if (finalOptions.showCloseButton) {
 		let xbuttonDiv = document.createElement('div');
 		popoverDiv.appendChild(xbuttonDiv);
@@ -243,6 +246,7 @@ function bobpop (options = {}) {
 		xbutton.style.border = 'none';
 		xbutton.style.background = 'transparent';
 		xbutton.style.cursor = 'pointer';
+		xbutton.style.boxShadow = 'none';
 		
 		const closeButtonText = `
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" focusable="false" style="stroke: ${finalOptions.closeButtonColor}; stroke-width: 3; stroke-linecap: round; display: inline-block; vertical-align: middle;">
@@ -260,6 +264,9 @@ function bobpop (options = {}) {
 		xbutton.setAttribute('popovertargetaction', 'hide');
 		xbutton.setAttribute('onmouseover','this.style.transform = \'scale(1.2)\'');
 		xbutton.setAttribute('onmouseout','this.style.transform = \'none\'');
+		xbutton.addEventListener('click', () => {
+			cancelled = true;
+		});
 	}
 	
 	
@@ -286,25 +293,47 @@ function bobpop (options = {}) {
 	bodyDiv.setAttribute('id',finalOptions.id + '_body');
 	
 	
-	// append an Ok button to the bottom of the body to dismiss the popover if desired 
-	if (finalOptions.showOkButton) {
-		let okButtonDiv = document.createElement('div');
-		okButtonDiv.setAttribute('id',finalOptions.id + '_okButton');
-		let okButton = `
-			<div style="margin-top: 1rem; text-align: center;">
-				<button 
-					popovertarget="${finalOptions.id}" 
-					aria-label="${finalOptions.okButtonText}" 
-					aria-controls="${popoverDiv.id}" 
-					aria-expanded="false">
-					${finalOptions.okButtonText}
-				</button>
-			</div>
-		`;
-		okButtonDiv.innerHTML = okButton;
-		popoverDiv.appendChild(okButtonDiv);		
-	}	
+	// create the control button div if applicable (ok/cancel buttons)
+	let controlButtonDiv;
+	if (finalOptions.showOkButton || finalOptions.showCancelButton) {
+		controlButtonDiv = document.createElement('div');
+		controlButtonDiv.style.marginTop = '1rem';
+		controlButtonDiv.style.textAlign = 'center';
+		popoverDiv.appendChild(controlButtonDiv);
+	}
 	
+	// append an Ok button to the bottom of the body to dismiss the popover if desired 
+	let confirmed = false;
+	if (finalOptions.showOkButton) {
+		let okButton = document.createElement('button');
+		okButton.setAttribute('popovertarget',finalOptions.id);
+		okButton.setAttribute('aria-label',finalOptions.okButtonText);
+		okButton.setAttribute('aria-controls',finalOptions.id);
+		okButton.setAttribute('aria-expanded',false);
+		okButton.textContent = finalOptions.okButtonText;
+		okButton.setAttribute('id',finalOptions.id + '_okButton');
+		okButton.classList.add('bobpop-okButton');
+		okButton.addEventListener('click', () => {
+			confirmed = true;
+		});					
+		controlButtonDiv.appendChild(okButton);
+	}
+
+	// append a Cancel button to the bottom of the body do dismiss the popover if desired
+	if (finalOptions.showCancelButton) {
+		let cancelButton = document.createElement('button');
+		cancelButton.setAttribute('popovertarget',finalOptions.id);
+		cancelButton.setAttribute('aria-label',finalOptions.cancelButtonText);
+		cancelButton.setAttribute('aria-controls',finalOptions.id);
+		cancelButton.setAttribute('aria-expanded',false);
+		cancelButton.textContent = finalOptions.cancelButtonText;
+		cancelButton.setAttribute('id',finalOptions.id + '_cancelButton');
+		cancelButton.classList.add('bobpop-cancelButton');
+		cancelButton.addEventListener('click', () => {
+			cancelled = true;
+		});
+		controlButtonDiv.appendChild(cancelButton);
+	}
 	
 	// if an anchor is specified it needs to be passed as a css anchor name (e.g.:  --anchorname)
 	if (finalOptions.anchor) {
@@ -348,6 +377,8 @@ function bobpop (options = {}) {
 			}			
 		} else {
 			if (typeof finalOptions.onBeforeClose === 'function') {
+				if (confirmed) { e.confirmed = true; }
+				if (cancelled) { e.cancelled = true; }
 				finalOptions.onBeforeClose(e);
 			}
 		}
@@ -364,6 +395,8 @@ function bobpop (options = {}) {
 		if (e.newState === 'closed') {
 			// execute anything from the onClose trigger
 			if (typeof finalOptions.onClose === 'function') {
+				if (confirmed) { e.confirmed = true; }
+				if (cancelled) { e.cancelled = true; }
 				finalOptions.onClose(e);
 			}
 		
@@ -482,7 +515,7 @@ function bobpop (options = {}) {
 				`;
 				
 				const chatBubbleStylesheet = document.createElement('style');
-				chatBubbleStylesheet.type = "text/css";
+				chatBubbleStylesheet.type = 'text/css';
 				chatBubbleStylesheet.id = chatBubbleStyleId;
 				chatBubbleStylesheet.textContent = chatBubbleCSS;				
 				document.head.appendChild(chatBubbleStylesheet);
@@ -491,7 +524,94 @@ function bobpop (options = {}) {
 			popoverDiv.setAttribute('data-tail', finalOptions.chatBubbleTail);
 		}
 	
-		const backdropStyleId = "bobpopBackdropStyle";
+		// ok & cancel button styles
+		const buttonStylesId = 'bobpopButtonStyle';
+		const buttonCSS = `
+		:where(.bobpopPopover) {
+			button {
+				background: linear-gradient(135deg, rgb(240, 240, 240), rgb(220, 220, 220));
+				border: 1px solid rgb(200, 200, 200);
+				color: #333;
+				padding: 0.25rem .5rem;
+				font-size: 1rem;
+				border-radius: 4px;
+				cursor: pointer;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+			}
+			button:hover {
+				background: linear-gradient(135deg, rgb(230, 230, 230), rgb(210, 210, 210));
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+				transform: translateY(-2px);
+			}
+			button:active {
+				background: rgb(200, 200, 200);
+				box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+				transform: translateY(0);
+			}
+			button:disabled {
+				background: rgb(240, 240, 240);
+				color: rgb(180, 180, 180);
+				border-color: rgb(200, 200, 200);
+				cursor: not-allowed;
+				opacity: 0.7;
+				box-shadow: none;
+			}			
+			button.bobpop-okButton {
+				margin: 0 .25rem;
+				background: #28a745;
+				color: white;
+				border: none;
+				padding: 0.6em 1.2em;
+				font-size: 1rem;
+				font-weight: bold;
+				border-radius: 4px;
+				cursor: pointer;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				transition: background-color 0.3s ease, box-shadow 0.3s ease;
+			}
+			button.bobpop-okButton:hover {
+				background: #218838;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+			}
+			button.bobpop-okButton:active {
+				background: #1e7e34;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			}
+			button.bobpop-cancelButton {
+				margin: 0 .25rem;
+				background: #dc3545;
+				color: white;
+				border: none;
+				padding: 0.6em 1.2em;
+				font-size: 1rem;
+				font-weight: bold;
+				border-radius: 4px;
+				cursor: pointer;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				transition: background-color 0.3s ease, box-shadow 0.3s ease;
+			}
+			button.bobpop-cancelButton:hover {
+				background: #c82333;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+			}
+			button.bobpop-cancelButton:active {
+				background: #bd2130;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			}
+		}
+		`;
+		if (!document.getElementById(buttonStylesId)) {
+			const buttonStyleSheet = document.createElement('style');
+			buttonStyleSheet.type = 'text/css';
+			buttonStyleSheet.id = buttonStylesId;
+			buttonStyleSheet.textContent = buttonCSS;
+			document.head.appendChild(buttonStyleSheet);
+		}
+		
+		
+		// backdrop style
+		const backdropStyleId = 'bobpopBackdropStyle';
 		const backdropCSS = `
 		:where(.bobpopPopover)::backdrop {
 			background-color: ${finalOptions.backdrop};
@@ -499,16 +619,16 @@ function bobpop (options = {}) {
 		}
 		`;
 			
-		if (!document.getElementById(backdropCSS)) {
-			const styleSheet = document.createElement("style");
-			styleSheet.type = "text/css";
-			styleSheet.id = backdropStyleId;
-			styleSheet.textContent = backdropCSS;
-
-			document.head.appendChild(styleSheet);
+		if (!document.getElementById(backdropStyleId)) {
+			const backdropStyleSheet = document.createElement('style');
+			backdropStyleSheet.type = 'text/css';
+			backdropStyleSheet.id = backdropStyleId;
+			backdropStyleSheet.textContent = backdropCSS;
+			document.head.appendChild(backdropStyleSheet);
 		}
 
-		const transitionStyleId = "bobpopTransitionStyles_" + (finalOptions.transitionType || 'scale');
+		// transition styles
+		const transitionStyleId = 'bobpopTransitionStyles_' + (finalOptions.transitionType || 'scale');
 		if (finalOptions.transition) {
 			// common transition CSS shared across all types
 			const commonTransitionCSS = `
@@ -545,8 +665,8 @@ function bobpop (options = {}) {
 			// transition type-specific settings
 			const transitions = {
 				scale: {
-					transformOpen: "scale(1)",
-					transformClosed: "scale(0)",
+					transformOpen: 'scale(1)',
+					transformClosed: 'scale(0)',
 					extraCSS: `
 						@media (prefers-reduced-motion: no-preference) {
 							transform: scale(.95);
@@ -554,8 +674,8 @@ function bobpop (options = {}) {
 					`
 				},
 				slideTop: {
-					transformOpen: "translateY(0)",
-					transformClosed: "translateY(-100%)",
+					transformOpen: 'translateY(0)',
+					transformClosed: 'translateY(-100%)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: translateY(0);
@@ -564,8 +684,8 @@ function bobpop (options = {}) {
 					`
 				},
 				slideBottom: {
-					transformOpen: "translateY(0)",
-					transformClosed: "translateY(100%)",
+					transformOpen: 'translateY(0)',
+					transformClosed: 'translateY(100%)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: translateY(0);
@@ -574,8 +694,8 @@ function bobpop (options = {}) {
 					`
 				},
 				slideLeft: {
-					transformOpen: "translateX(0)",
-					transformClosed: "translateX(-100%)",
+					transformOpen: 'translateX(0)',
+					transformClosed: 'translateX(-100%)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: translateY(0);
@@ -584,8 +704,8 @@ function bobpop (options = {}) {
 					`
 				},
 				slideRight: {
-					transformOpen: "translateX(0)",
-					transformClosed: "translateX(100%)",
+					transformOpen: 'translateX(0)',
+					transformClosed: 'translateX(100%)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: translateY(0);
@@ -594,8 +714,8 @@ function bobpop (options = {}) {
 					`
 				},
 				flip: {
-					transformOpen: "rotateY(0)",
-					transformClosed: "rotateY(90deg)",
+					transformOpen: 'rotateY(0)',
+					transformClosed: 'rotateY(90deg)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: none;
@@ -604,8 +724,8 @@ function bobpop (options = {}) {
 					`
 				},
 				rotate: {
-					transformOpen: "rotate(0deg)",
-					transformClosed: "rotate(-180deg)",
+					transformOpen: 'rotate(0deg)',
+					transformClosed: 'rotate(-180deg)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: none;
@@ -614,8 +734,8 @@ function bobpop (options = {}) {
 					`
 				},
 				fadeSlide: {
-					transformOpen: "translateY(0)",
-					transformClosed: "translateY(-10%)",
+					transformOpen: 'translateY(0)',
+					transformClosed: 'translateY(-10%)',
 					extraCSS: `
 						& {
 							transition: opacity .6s ease, transform .6s ease;
@@ -627,8 +747,8 @@ function bobpop (options = {}) {
 					`
 				},
 				stretchHorizontal: {
-					transformOpen: "scaleX(1)",
-					transformClosed: "scaleX(0)",
+					transformOpen: 'scaleX(1)',
+					transformClosed: 'scaleX(0)',
 					extraCSS: `
 						transform-origin: left;
 						@media (prefers-reduced-motion: reduce) {
@@ -638,8 +758,8 @@ function bobpop (options = {}) {
 					`
 				},
 				stretchVertical: {
-					transformOpen: "scaleY(1)",
-					transformClosed: "scaleY(0)",
+					transformOpen: 'scaleY(1)',
+					transformClosed: 'scaleY(0)',
 					extraCSS: `
 						transform-origin: top; /* Stretch from top */
 						@media (prefers-reduced-motion: reduce) {
@@ -649,8 +769,8 @@ function bobpop (options = {}) {
 					`
 				},
 				pop: {
-					transformOpen: "scale(1)",
-					transformClosed: "scale(0.5)",
+					transformOpen: 'scale(1)',
+					transformClosed: 'scale(0.5)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: none;
@@ -659,8 +779,8 @@ function bobpop (options = {}) {
 					`
 				},
 				falling: {
-					transformOpen: "translateY(0) rotate(0)",
-					transformClosed: "translateY(-100%) rotate(-15deg)",
+					transformOpen: 'translateY(0) rotate(0)',
+					transformClosed: 'translateY(-100%) rotate(-15deg)',
 					extraCSS: `
 						@media (prefers-reduced-motion: reduce) {
 							transform: none;
@@ -675,8 +795,8 @@ function bobpop (options = {}) {
 
 			// replace placeholders in the common transition CSS
 			let transitionCSS = commonTransitionCSS
-				.replace("{transformOpen}", selectedTransition.transformOpen)
-				.replace("{transformClosed}", selectedTransition.transformClosed);
+				.replace('{transformOpen}', selectedTransition.transformOpen)
+				.replace('{transformClosed}', selectedTransition.transformClosed);
 
 			// add any extra CSS specific to the transition type (prefers-reduce-motion stuff)
 			if (selectedTransition.extraCSS) {
@@ -684,8 +804,8 @@ function bobpop (options = {}) {
 			}
 
 			// create and append the stylesheet
-			const transitionStyleSheet = document.createElement("style");
-			transitionStyleSheet.type = "text/css";
+			const transitionStyleSheet = document.createElement('style');
+			transitionStyleSheet.type = 'text/css';
 			transitionStyleSheet.id = transitionStyleId;
 			transitionStyleSheet.textContent = transitionCSS;
 			if (document.getElementById(transitionStyleId)) { document.getElementById(transitionStyleId).remove(); }
