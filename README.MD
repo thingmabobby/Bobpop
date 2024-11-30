@@ -84,6 +84,7 @@ Usage - theme: 'fancy'
 
 
 **TRANSITIONS:**
+
 bobpop uses the scale transition by default, but you can specify any of the transitions below.
 Usage: - transitionType: 'falling'
 
