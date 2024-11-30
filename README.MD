@@ -208,7 +208,7 @@ function addUserSubmit(bobpopID) {
 }
 ```
 
-- An example of a manually-dismissed bobpop with a slideLeft transition and a button in the body that opens a lightly-dismissed "warning" bobpop popover (done in-line) with a fadeSlide transition. It's anchored to an element on the page and logs to console when it opens and closes. It also logs to console based on the ok/cancel (the X button is a cancel too) buttons being clicked to tell you if it was confirmed/cancelled. This is an example of how you could turn bobpop into a dialog -- especially using the manual type so it's not lightly dismissed.
+- An example of a manually-dismissed bobpop with a slideLeft transition and a button in the body that opens a lightly-dismissed "warning" bobpop popover (done in-line) with a fadeSlide transition. It logs to console before it opens and closes as well as when it opens and closes. It also logs to console based on the ok/cancel (the X button is a cancel too) buttons being clicked to tell you if it was confirmed/cancelled. This is an example of how you could turn bobpop into a dialog -- especially using the manual type so it's not lightly dismissed.
 
 See example: [copdepen](https://codepen.io/Bobby-L-the-decoder/pen/KwPKJKd "codepen")
 ```
