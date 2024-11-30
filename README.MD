@@ -1,7 +1,7 @@
 # Bobpop
  Vanilla JavaScript custom alerts using the [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API "Popover API") and [CSS anchors](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning "CSS anchors") to show alerts/dialogs/tooltips in the top layer potentially positioned with CSS anchors.
 
- I originally wrote this to help me create popover API error alerts on top of my existing dialog modals, but I figured it can be used for any small alert, dialog, or tooltip. This was mostly me just testing the Popover API and CSS anchors and slowly adding options.
+ I originally wrote this to help me create popover API error alerts on top of my existing dialog modals, but I figured it can be used for any small alert, dialog, tooltip, focused form, etc. This was mostly me just testing the Popover API and CSS anchors and slowly adding options.
 
 
 **OPTIONS:**
