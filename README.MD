@@ -139,11 +139,12 @@ bobpop({
 ````
 
 
-- A light-dismissed alert, the chatbubble theme with custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
+- A light-dismissed alert, the chatbubble theme, a falling transition, with custom HTML in the title. See example: [codepen](https://codepen.io/Bobby-L-the-decoder/pen/xxoZQKj "codepen")
 ````
 bobpop({
 	body: 'Check out this <b>sweet</b> popover!',
 	theme: 'chatbubble',
+	transitionType: 'falling',
 	chatBubbleTail: 'topLeft',
 	anchor: '--myanchor',
 	anchorToId: 'myElement',
